@@ -1,34 +1,38 @@
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 const Features = () => {
+  const { t } = useLanguage();
+
   const features = [
     {
-      title: "Authentication & Users",
-      description: "Complete auth system with social logins, email verification, and user management.",
+      title: t('features.auth.title'),
+      description: t('features.auth.description'),
       icon: "🔐"
     },
     {
-      title: "Payment Integration",
-      description: "Stripe payments, subscriptions, and billing management built-in and ready to use.",
+      title: t('features.payment.title'),
+      description: t('features.payment.description'),
       icon: "💳"
     },
     {
-      title: "Database & API",
-      description: "PostgreSQL database with Prisma ORM and REST/GraphQL APIs pre-configured.",
+      title: t('features.database.title'),
+      description: t('features.database.description'),
       icon: "🗄️"
     },
     {
-      title: "Modern Tech Stack",
-      description: "Next.js, TypeScript, Tailwind CSS, and the latest tools for modern development.",
+      title: t('features.tech.title'),
+      description: t('features.tech.description'),
       icon: "⚡"
     },
     {
-      title: "One-Click Deploy",
-      description: "Deploy to Vercel, Netlify, or Railway with a single command. CI/CD included.",
+      title: t('features.deploy.title'),
+      description: t('features.deploy.description'),
       icon: "🚀"
     },
     {
-      title: "Developer Experience",
-      description: "Hot reload, TypeScript, ESLint, Prettier, and debugging tools pre-configured.",
+      title: t('features.dx.title'),
+      description: t('features.dx.description'),
       icon: "🛠️"
     }
   ];
@@ -38,11 +42,10 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-            Everything you need to ship fast
+            {t('features.title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Stop wasting time on boilerplate. Focus on your unique features and 
-            let us handle the boring stuff.
+            {t('features.subtitle')}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

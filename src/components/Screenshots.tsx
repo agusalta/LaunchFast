@@ -1,14 +1,18 @@
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 const Screenshots = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="py-20 bg-gray-900 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            See it in action
+            {t('screenshots.title')}
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Clean, modern templates that you can customize and ship immediately.
+            {t('screenshots.subtitle')}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
