@@ -1,10 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
 
   return (
     <section className="py-20 md:py-32 bg-gradient-to-b from-white to-gray-50">
@@ -19,12 +21,24 @@ const Hero = () => {
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button size="lg" className="bg-green-600 hover:bg-green-700 text-lg px-8 py-4">
-              {t('hero.ctaPrimary')}
-            </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              {t('hero.ctaSecondary')}
-            </Button>
+            {user ? (
+              <Link to="/dashboard">
+                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-lg px-8 py-4">
+                  {t('hero.goToDashboard') || 'Go to Dashboard'}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button size="lg" className="bg-green-600 hover:bg-green-700 text-lg px-8 py-4">
+                    {t('hero.ctaPrimary')}
+                  </Button>
+                </Link>
+                <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+                  {t('hero.ctaSecondary')}
+                </Button>
+              </>
+            )}
           </div>
           <div className="text-sm text-gray-500 mb-16">
             {t('hero.noCredit')}

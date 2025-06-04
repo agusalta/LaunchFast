@@ -2,9 +2,12 @@
 import { Button } from "@/components/ui/button";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
@@ -20,12 +23,35 @@ const Header = () => {
             {t('header.pricing')}
           </a>
           <LanguageToggle />
-          <Button variant="outline" className="mr-2">
-            {t('header.signin')}
-          </Button>
-          <Button className="bg-green-600 hover:bg-green-700">
-            {t('header.startFree')}
-          </Button>
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <Link to="/dashboard">
+                <Button variant="outline" className="mr-2">
+                  {t('header.dashboard') || 'Dashboard'}
+                </Button>
+              </Link>
+              <Button 
+                variant="outline"
+                onClick={signOut}
+                className="text-red-600 border-red-200 hover:bg-red-50"
+              >
+                {t('header.signOut') || 'Sign out'}
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="outline" className="mr-2">
+                  {t('header.signin')}
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button className="bg-green-600 hover:bg-green-700">
+                  {t('header.startFree')}
+                </Button>
+              </Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

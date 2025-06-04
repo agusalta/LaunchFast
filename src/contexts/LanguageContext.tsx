@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 type Language = 'en' | 'es';
 
@@ -9,196 +9,164 @@ interface LanguageContextType {
   t: (key: string) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
 const translations = {
   en: {
     // Header
     'header.features': 'Features',
     'header.pricing': 'Pricing',
-    'header.signin': 'Sign in',
-    'header.startFree': 'Start for free',
+    'header.signin': 'Sign In',
+    'header.startFree': 'Start Free',
+    'header.dashboard': 'Dashboard',
+    'header.signOut': 'Sign Out',
     
     // Hero
-    'hero.title': 'Ship your MVP in',
-    'hero.titleHighlight': 'days',
-    'hero.titleEnd': ', not months',
-    'hero.subtitle': 'The all-in-one boilerplate for indie developers. Authentication, payments, database, and deployment — all configured and ready to go.',
-    'hero.ctaPrimary': 'Start building for free',
-    'hero.ctaSecondary': 'View demo',
-    'hero.noCredit': 'No credit card required • 14-day free trial • Cancel anytime',
-    'hero.stat1': '10x',
-    'hero.stat1Label': 'Faster development',
-    'hero.stat2': '$0',
-    'hero.stat2Label': 'Setup cost',
-    'hero.stat3': '1 day',
-    'hero.stat3Label': 'To first deployment',
+    'hero.title': 'Launch Your SaaS',
+    'hero.titleHighlight': 'Fast',
+    'hero.titleEnd': ' and Scale',
+    'hero.subtitle': 'The complete toolkit to build, deploy, and scale your SaaS application with modern technologies.',
+    'hero.ctaPrimary': 'Get Started Free',
+    'hero.ctaSecondary': 'View Demo',
+    'hero.goToDashboard': 'Go to Dashboard',
+    'hero.noCredit': 'No credit card required • Free 14-day trial',
+    'hero.stat1': '10k+',
+    'hero.stat1Label': 'Active Users',
+    'hero.stat2': '99.9%',
+    'hero.stat2Label': 'Uptime',
+    'hero.stat3': '24/7',
+    'hero.stat3Label': 'Support',
     
     // Features
-    'features.title': 'Everything you need to ship fast',
-    'features.subtitle': 'Stop wasting time on boilerplate. Focus on your unique features and let us handle the boring stuff.',
-    'features.auth.title': 'Authentication & Users',
-    'features.auth.description': 'Complete auth system with social logins, email verification, and user management.',
-    'features.payment.title': 'Payment Integration',
-    'features.payment.description': 'Stripe payments, subscriptions, and billing management built-in and ready to use.',
-    'features.database.title': 'Database & API',
-    'features.database.description': 'PostgreSQL database with Prisma ORM and REST/GraphQL APIs pre-configured.',
+    'features.title': 'Everything You Need to Launch',
+    'features.subtitle': 'Built with the latest technologies and best practices for modern web applications.',
+    'features.auth.title': 'Authentication & Authorization',
+    'features.auth.description': 'Complete user management with secure authentication, role-based access control, and social login options.',
+    'features.payment.title': 'Payment Processing',
+    'features.payment.description': 'Integrated Stripe payments with subscription management, invoicing, and automated billing.',
+    'features.database.title': 'Database & Storage',
+    'features.database.description': 'PostgreSQL database with Supabase integration, real-time updates, and file storage capabilities.',
     'features.tech.title': 'Modern Tech Stack',
-    'features.tech.description': 'Next.js, TypeScript, Tailwind CSS, and the latest tools for modern development.',
-    'features.deploy.title': 'One-Click Deploy',
-    'features.deploy.description': 'Deploy to Vercel, Netlify, or Railway with a single command. CI/CD included.',
+    'features.tech.description': 'Built with React, TypeScript, Tailwind CSS, and other cutting-edge technologies.',
+    'features.deploy.title': 'Easy Deployment',
+    'features.deploy.description': 'One-click deployment to Vercel, Netlify, or your preferred hosting platform.',
     'features.dx.title': 'Developer Experience',
-    'features.dx.description': 'Hot reload, TypeScript, ESLint, Prettier, and debugging tools pre-configured.',
+    'features.dx.description': 'Hot reload, TypeScript support, ESLint, Prettier, and comprehensive documentation.',
     
-    // Screenshots
-    'screenshots.title': 'See it in action',
-    'screenshots.subtitle': 'Clean, modern templates that you can customize and ship immediately.',
+    // Auth
+    'auth.signUp': 'Sign Up',
+    'auth.signIn': 'Sign In',
+    'auth.signOut': 'Sign Out',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.emailPlaceholder': 'Enter your email',
+    'auth.passwordPlaceholder': 'Enter your password',
+    'auth.haveAccount': 'Already have an account?',
+    'auth.noAccount': "Don't have an account?",
+    'auth.backToHome': 'Back to home',
     
-    // Pricing
-    'pricing.title': 'Simple, one-time pricing',
-    'pricing.subtitle': 'No subscriptions, no monthly fees. Pay once, ship forever.',
-    'pricing.popular': 'Most Popular',
-    'pricing.free.name': 'Free',
-    'pricing.free.price': '$0',
-    'pricing.free.period': 'forever',
-    'pricing.free.description': 'Perfect for trying out LaunchFast',
-    'pricing.free.cta': 'Start for free',
-    'pricing.pro.name': 'Pro',
-    'pricing.pro.price': '$49',
-    'pricing.pro.period': 'one-time',
-    'pricing.pro.description': 'Everything you need to ship fast',
-    'pricing.pro.cta': 'Get Pro',
-    'pricing.team.name': 'Team',
-    'pricing.team.price': '$149',
-    'pricing.team.period': 'one-time',
-    'pricing.team.description': 'For agencies and teams',
-    'pricing.team.cta': 'Get Team',
-    
-    // Testimonials
-    'testimonials.title': 'Loved by indie builders',
-    'testimonials.subtitle': 'Real feedback from developers who shipped real products.',
-    
-    // Contact
-    'contact.title': 'Questions? Let\'s talk',
-    'contact.subtitle': 'Need help choosing the right plan or have technical questions? We\'re here to help you ship faster.',
-    'contact.getInTouch': 'Get in touch',
-    'contact.emailUs': 'Email us',
-    'contact.emailDescription': 'Quick questions or need support? Drop us a line.',
-    'contact.responseTime': 'Typical response time',
-    'contact.responseDescription': 'We usually respond within 2-4 hours during business days. For technical support, we aim for same-day resolution.',
-    'contact.form.name': 'Name',
-    'contact.form.namePlaceholder': 'Your name',
-    'contact.form.email': 'Email',
-    'contact.form.emailPlaceholder': 'your@email.com',
-    'contact.form.subject': 'Subject',
-    'contact.form.subjectPlaceholder': 'What\'s this about?',
-    'contact.form.message': 'Message',
-    'contact.form.messagePlaceholder': 'Tell us more about your project or question...',
-    'contact.form.send': 'Send message',
+    // Dashboard
+    'dashboard.welcome': 'Welcome to your dashboard!',
+    'dashboard.welcomeMessage': 'You are successfully logged in. Here you can manage your account and access all features.',
+    'dashboard.email': 'Email',
+    'dashboard.userId': 'User ID',
+    'dashboard.profile': 'Profile Settings',
+    'dashboard.profileDesc': 'Manage your account settings and preferences.',
+    'dashboard.viewProfile': 'View Profile',
+    'dashboard.analytics': 'Analytics',
+    'dashboard.analyticsDesc': 'View your usage statistics and insights.',
+    'dashboard.viewAnalytics': 'View Analytics',
+    'dashboard.support': 'Support',
+    'dashboard.supportDesc': 'Get help and contact our support team.',
+    'dashboard.contactSupport': 'Contact Support',
     
     // CTA
-    'cta.title': 'Ready to ship your next big idea?',
-    'cta.subtitle': 'Join 1000+ indie developers who\'ve shipped their MVPs faster with LaunchFast.',
-    'cta.button': 'Start building now',
-    'cta.benefits': '✅ 14-day free trial      ✅ No setup fees      ✅ Cancel anytime',
+    'cta.title': 'Ready to Launch Your SaaS?',
+    'cta.subtitle': 'Join thousands of developers who have already launched successful applications.',
+    'cta.button': 'Start Building Today',
+    'cta.benefits': '✓ No setup fees ✓ Cancel anytime ✓ 14-day free trial'
   },
   es: {
     // Header
     'header.features': 'Características',
     'header.pricing': 'Precios',
-    'header.signin': 'Iniciar sesión',
-    'header.startFree': 'Empezar gratis',
+    'header.signin': 'Iniciar Sesión',
+    'header.startFree': 'Empezar Gratis',
+    'header.dashboard': 'Panel',
+    'header.signOut': 'Cerrar Sesión',
     
     // Hero
-    'hero.title': 'Lanza tu MVP en',
-    'hero.titleHighlight': 'días',
-    'hero.titleEnd': ', no meses',
-    'hero.subtitle': 'El boilerplate todo-en-uno para desarrolladores indie. Autenticación, pagos, base de datos y despliegue — todo configurado y listo para usar.',
-    'hero.ctaPrimary': 'Empezar a construir gratis',
-    'hero.ctaSecondary': 'Ver demo',
-    'hero.noCredit': 'No se requiere tarjeta de crédito • Prueba gratuita de 14 días • Cancela en cualquier momento',
-    'hero.stat1': '10x',
-    'hero.stat1Label': 'Desarrollo más rápido',
-    'hero.stat2': '$0',
-    'hero.stat2Label': 'Costo de configuración',
-    'hero.stat3': '1 día',
-    'hero.stat3Label': 'Al primer despliegue',
+    'hero.title': 'Lanza tu SaaS',
+    'hero.titleHighlight': 'Rápido',
+    'hero.titleEnd': ' y Escala',
+    'hero.subtitle': 'El conjunto completo de herramientas para construir, desplegar y escalar tu aplicación SaaS con tecnologías modernas.',
+    'hero.ctaPrimary': 'Empezar Gratis',
+    'hero.ctaSecondary': 'Ver Demo',
+    'hero.goToDashboard': 'Ir al Panel',
+    'hero.noCredit': 'No se requiere tarjeta de crédito • Prueba gratuita de 14 días',
+    'hero.stat1': '10k+',
+    'hero.stat1Label': 'Usuarios Activos',
+    'hero.stat2': '99.9%',
+    'hero.stat2Label': 'Tiempo Activo',
+    'hero.stat3': '24/7',
+    'hero.stat3Label': 'Soporte',
     
     // Features
-    'features.title': 'Todo lo que necesitas para lanzar rápido',
-    'features.subtitle': 'Deja de perder tiempo en boilerplate. Enfócate en tus características únicas y déjanos manejar lo aburrido.',
-    'features.auth.title': 'Autenticación y Usuarios',
-    'features.auth.description': 'Sistema de autenticación completo con logins sociales, verificación de email y gestión de usuarios.',
-    'features.payment.title': 'Integración de Pagos',
-    'features.payment.description': 'Pagos Stripe, suscripciones y gestión de facturación integrados y listos para usar.',
-    'features.database.title': 'Base de Datos y API',
-    'features.database.description': 'Base de datos PostgreSQL con Prisma ORM y APIs REST/GraphQL preconfiguradas.',
+    'features.title': 'Todo lo que Necesitas para Lanzar',
+    'features.subtitle': 'Construido con las últimas tecnologías y mejores prácticas para aplicaciones web modernas.',
+    'features.auth.title': 'Autenticación y Autorización',
+    'features.auth.description': 'Gestión completa de usuarios con autenticación segura, control de acceso basado en roles y opciones de login social.',
+    'features.payment.title': 'Procesamiento de Pagos',
+    'features.payment.description': 'Pagos integrados con Stripe con gestión de suscripciones, facturación y cobro automatizado.',
+    'features.database.title': 'Base de Datos y Almacenamiento',
+    'features.database.description': 'Base de datos PostgreSQL con integración Supabase, actualizaciones en tiempo real y capacidades de almacenamiento de archivos.',
     'features.tech.title': 'Stack Tecnológico Moderno',
-    'features.tech.description': 'Next.js, TypeScript, Tailwind CSS y las herramientas más recientes para desarrollo moderno.',
-    'features.deploy.title': 'Despliegue con Un Clic',
-    'features.deploy.description': 'Despliega en Vercel, Netlify o Railway con un solo comando. CI/CD incluido.',
-    'features.dx.title': 'Experiencia de Desarrollador',
-    'features.dx.description': 'Recarga en caliente, TypeScript, ESLint, Prettier y herramientas de debugging preconfiguradas.',
+    'features.tech.description': 'Construido con React, TypeScript, Tailwind CSS y otras tecnologías de vanguardia.',
+    'features.deploy.title': 'Despliegue Fácil',
+    'features.deploy.description': 'Despliegue con un clic a Vercel, Netlify o tu plataforma de hosting preferida.',
+    'features.dx.title': 'Experiencia del Desarrollador',
+    'features.dx.description': 'Recarga en caliente, soporte TypeScript, ESLint, Prettier y documentación completa.',
     
-    // Screenshots
-    'screenshots.title': 'Míralo en acción',
-    'screenshots.subtitle': 'Plantillas limpias y modernas que puedes personalizar y lanzar inmediatamente.',
+    // Auth
+    'auth.signUp': 'Registrarse',
+    'auth.signIn': 'Iniciar Sesión',
+    'auth.signOut': 'Cerrar Sesión',
+    'auth.email': 'Email',
+    'auth.password': 'Contraseña',
+    'auth.emailPlaceholder': 'Ingresa tu email',
+    'auth.passwordPlaceholder': 'Ingresa tu contraseña',
+    'auth.haveAccount': '¿Ya tienes una cuenta?',
+    'auth.noAccount': '¿No tienes una cuenta?',
+    'auth.backToHome': 'Volver al inicio',
     
-    // Pricing
-    'pricing.title': 'Precios simples, de una sola vez',
-    'pricing.subtitle': 'Sin suscripciones, sin tarifas mensuales. Paga una vez, lanza para siempre.',
-    'pricing.popular': 'Más Popular',
-    'pricing.free.name': 'Gratis',
-    'pricing.free.price': '$0',
-    'pricing.free.period': 'para siempre',
-    'pricing.free.description': 'Perfecto para probar LaunchFast',
-    'pricing.free.cta': 'Empezar gratis',
-    'pricing.pro.name': 'Pro',
-    'pricing.pro.price': '$49',
-    'pricing.pro.period': 'una vez',
-    'pricing.pro.description': 'Todo lo que necesitas para lanzar rápido',
-    'pricing.pro.cta': 'Obtener Pro',
-    'pricing.team.name': 'Equipo',
-    'pricing.team.price': '$149',
-    'pricing.team.period': 'una vez',
-    'pricing.team.description': 'Para agencias y equipos',
-    'pricing.team.cta': 'Obtener Equipo',
-    
-    // Testimonials
-    'testimonials.title': 'Amado por constructores indie',
-    'testimonials.subtitle': 'Comentarios reales de desarrolladores que lanzaron productos reales.',
-    
-    // Contact
-    'contact.title': '¿Preguntas? Hablemos',
-    'contact.subtitle': '¿Necesitas ayuda para elegir el plan correcto o tienes preguntas técnicas? Estamos aquí para ayudarte a lanzar más rápido.',
-    'contact.getInTouch': 'Ponte en contacto',
-    'contact.emailUs': 'Envíanos un email',
-    'contact.emailDescription': '¿Preguntas rápidas o necesitas soporte? Escríbenos.',
-    'contact.responseTime': 'Tiempo de respuesta típico',
-    'contact.responseDescription': 'Normalmente respondemos en 2-4 horas durante días laborables. Para soporte técnico, apuntamos a resolución el mismo día.',
-    'contact.form.name': 'Nombre',
-    'contact.form.namePlaceholder': 'Tu nombre',
-    'contact.form.email': 'Email',
-    'contact.form.emailPlaceholder': 'tu@email.com',
-    'contact.form.subject': 'Asunto',
-    'contact.form.subjectPlaceholder': '¿De qué se trata?',
-    'contact.form.message': 'Mensaje',
-    'contact.form.messagePlaceholder': 'Cuéntanos más sobre tu proyecto o pregunta...',
-    'contact.form.send': 'Enviar mensaje',
+    // Dashboard
+    'dashboard.welcome': '¡Bienvenido a tu panel!',
+    'dashboard.welcomeMessage': 'Has iniciado sesión exitosamente. Aquí puedes gestionar tu cuenta y acceder a todas las funciones.',
+    'dashboard.email': 'Email',
+    'dashboard.userId': 'ID de Usuario',
+    'dashboard.profile': 'Configuración de Perfil',
+    'dashboard.profileDesc': 'Gestiona la configuración de tu cuenta y preferencias.',
+    'dashboard.viewProfile': 'Ver Perfil',
+    'dashboard.analytics': 'Analíticas',
+    'dashboard.analyticsDesc': 'Ve tus estadísticas de uso e insights.',
+    'dashboard.viewAnalytics': 'Ver Analíticas',
+    'dashboard.support': 'Soporte',
+    'dashboard.supportDesc': 'Obtén ayuda y contacta a nuestro equipo de soporte.',
+    'dashboard.contactSupport': 'Contactar Soporte',
     
     // CTA
-    'cta.title': '¿Listo para lanzar tu próxima gran idea?',
-    'cta.subtitle': 'Únete a más de 1000 desarrolladores indie que han lanzado sus MVPs más rápido con LaunchFast.',
-    'cta.button': 'Empezar a construir ahora',
-    'cta.benefits': '✅ Prueba gratuita de 14 días      ✅ Sin costos de configuración      ✅ Cancela en cualquier momento',
+    'cta.title': '¿Listo para Lanzar tu SaaS?',
+    'cta.subtitle': 'Únete a miles de desarrolladores que ya han lanzado aplicaciones exitosas.',
+    'cta.button': 'Empezar a Construir Hoy',
+    'cta.benefits': '✓ Sin costos de configuración ✓ Cancela en cualquier momento ✓ Prueba gratuita de 14 días'
   }
 };
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
 
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    return translations[language][key as keyof typeof translations['en']] || key;
   };
 
   return (
