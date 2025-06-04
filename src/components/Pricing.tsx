@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -13,11 +12,11 @@ const Pricing = () => {
       period: t('pricing.free.period'),
       description: t('pricing.free.description'),
       features: [
-        "Basic boilerplate setup",
-        "Authentication templates",
-        "1 project",
-        "Community support",
-        "Basic documentation"
+        t('pricing.features.free.boilerplate'),
+        t('pricing.features.free.auth'),
+        t('pricing.features.free.projects'),
+        t('pricing.features.free.support'),
+        t('pricing.features.free.docs')
       ],
       cta: t('pricing.free.cta'),
       popular: false
@@ -28,13 +27,13 @@ const Pricing = () => {
       period: t('pricing.pro.period'),
       description: t('pricing.pro.description'),
       features: [
-        "Complete boilerplate package",
-        "Auth + Payments + Database",
-        "Unlimited projects",
-        "Premium components library",
-        "Priority support",
-        "Deployment guides",
-        "Lifetime updates"
+        t('pricing.features.pro.boilerplate'),
+        t('pricing.features.pro.auth'),
+        t('pricing.features.pro.projects'),
+        t('pricing.features.pro.components'),
+        t('pricing.features.pro.support'),
+        t('pricing.features.pro.deployment'),
+        t('pricing.features.pro.updates')
       ],
       cta: t('pricing.pro.cta'),
       popular: true
@@ -45,13 +44,13 @@ const Pricing = () => {
       period: t('pricing.team.period'),
       description: t('pricing.team.description'),
       features: [
-        "Everything in Pro",
-        "Team collaboration tools",
-        "White-label options",
-        "Custom integrations",
-        "1-on-1 onboarding call",
-        "Custom components",
-        "Extended license"
+        t('pricing.features.team.everything'),
+        t('pricing.features.team.collaboration'),
+        t('pricing.features.team.whitelabel'),
+        t('pricing.features.team.integrations'),
+        t('pricing.features.team.onboarding'),
+        t('pricing.features.team.components'),
+        t('pricing.features.team.license')
       ],
       cta: t('pricing.team.cta'),
       popular: false

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState } from 'react';
 
 type Language = 'en' | 'es';
@@ -82,7 +81,101 @@ const translations = {
     'cta.title': 'Ready to Launch Your SaaS?',
     'cta.subtitle': 'Join thousands of developers who have already launched successful applications.',
     'cta.button': 'Start Building Today',
-    'cta.benefits': '✓ No setup fees ✓ Cancel anytime ✓ 14-day free trial'
+    'cta.benefits': '✓ No setup fees ✓ Cancel anytime ✓ 14-day free trial',
+    
+    // Pricing
+    'pricing.title': 'Simple, Transparent Pricing',
+    'pricing.subtitle': 'Choose the plan that best fits your needs',
+    'pricing.popular': 'Most Popular',
+    'pricing.free.name': 'Free',
+    'pricing.free.price': '$0',
+    'pricing.free.period': 'month',
+    'pricing.free.description': 'Perfect for getting started',
+    'pricing.free.cta': 'Get Started',
+    'pricing.pro.name': 'Pro',
+    'pricing.pro.price': '$29',
+    'pricing.pro.period': 'month',
+    'pricing.pro.description': 'For growing businesses',
+    'pricing.pro.cta': 'Start Free Trial',
+    'pricing.team.name': 'Team',
+    'pricing.team.price': '$99',
+    'pricing.team.period': 'month',
+    'pricing.team.description': 'For teams and enterprises',
+    'pricing.team.cta': 'Contact Sales',
+    
+    // Características de los planes
+    'pricing.features.free.boilerplate': 'Basic boilerplate configuration',
+    'pricing.features.free.auth': 'Authentication templates',
+    'pricing.features.free.projects': '1 project',
+    'pricing.features.free.support': 'Community support',
+    'pricing.features.free.docs': 'Basic documentation',
+    
+    'pricing.features.pro.boilerplate': 'Complete boilerplate package',
+    'pricing.features.pro.auth': 'Auth + Payments + Database',
+    'pricing.features.pro.projects': 'Unlimited projects',
+    'pricing.features.pro.components': 'Premium component library',
+    'pricing.features.pro.support': 'Priority support',
+    'pricing.features.pro.deployment': 'Deployment guides',
+    'pricing.features.pro.updates': 'Lifetime updates',
+    
+    'pricing.features.team.everything': 'Everything in the Pro plan',
+    'pricing.features.team.collaboration': 'Team collaboration tools',
+    'pricing.features.team.whitelabel': 'White label options',
+    'pricing.features.team.integrations': 'Custom integrations',
+    'pricing.features.team.onboarding': '1-on-1 onboarding call',
+    'pricing.features.team.components': 'Custom components',
+    'pricing.features.team.license': 'Extended license',
+    
+    // Screenshots
+    'screenshots.title': 'See it in Action',
+    'screenshots.subtitle': 'Take a look at some of the key features and components included in the boilerplate.',
+    
+    // Testimonials
+    'testimonials.title': 'What Our Users Say',
+    'testimonials.subtitle': 'Join thousands of satisfied developers who have successfully launched their applications.',
+    'testimonials.roles.indieDev': 'Indie Developer',
+    'testimonials.roles.freelancer': 'Freelancer',
+    'testimonials.roles.soloFounder': 'Solo Founder',
+    'testimonials.roles.fullstack': 'Full-stack Dev',
+    'testimonials.content.alex': 'Shipped my SaaS in 3 days instead of 3 months. The boilerplate is clean and the auth flow just works.',
+    'testimonials.content.sarah': 'Finally, a boilerplate that doesn\'t feel bloated. Got my client\'s MVP live in a weekend.',
+    'testimonials.content.marcus': 'The payment integration saved me weeks. Now I focus on features, not infrastructure.',
+    'testimonials.content.emma': 'Best $49 I\'ve spent. The TypeScript setup alone is worth it. Everything just works.',
+
+    // Contact
+    'contact.title': 'Get in Touch',
+    'contact.subtitle': 'Have questions? We\'d love to hear from you. Send us a message and we\'ll respond as soon as possible.',
+    'contact.getInTouch': 'Get in Touch',
+    'contact.emailUs': 'Email Us',
+    'contact.emailDescription': 'Send us an email and we\'ll get back to you as soon as possible.',
+    'contact.responseTime': 'Response Time',
+    'contact.responseDescription': 'We typically respond to all inquiries within 24 hours during business days.',
+    'contact.form.name': 'Name',
+    'contact.form.namePlaceholder': 'Enter your name',
+    'contact.form.email': 'Email',
+    'contact.form.emailPlaceholder': 'Enter your email',
+    'contact.form.subject': 'Subject',
+    'contact.form.subjectPlaceholder': 'Enter the subject',
+    'contact.form.message': 'Message',
+    'contact.form.messagePlaceholder': 'Enter your message',
+    'contact.form.send': 'Send Message',
+
+    // Footer
+    'footer.description': 'The fastest way to build and ship your SaaS MVP. Focus on your unique features, we\'ll handle the boilerplate.',
+    'footer.product.title': 'Product',
+    'footer.product.features': 'Features',
+    'footer.product.pricing': 'Pricing',
+    'footer.product.documentation': 'Documentation',
+    'footer.product.changelog': 'Changelog',
+    'footer.product.roadmap': 'Roadmap',
+    'footer.support.title': 'Support',
+    'footer.support.contact': 'Contact',
+    'footer.support.helpCenter': 'Help Center',
+    'footer.support.discord': 'Discord Community',
+    'footer.support.status': 'Status Page',
+    'footer.copyright': '© 2024 LaunchFast. All rights reserved.',
+    'footer.privacy': 'Privacy Policy',
+    'footer.terms': 'Terms of Service',
   },
   es: {
     // Header
@@ -156,7 +249,101 @@ const translations = {
     'cta.title': '¿Listo para Lanzar tu SaaS?',
     'cta.subtitle': 'Únete a miles de desarrolladores que ya han lanzado aplicaciones exitosas.',
     'cta.button': 'Empezar a Construir Hoy',
-    'cta.benefits': '✓ Sin costos de configuración ✓ Cancela en cualquier momento ✓ Prueba gratuita de 14 días'
+    'cta.benefits': '✓ Sin costos de configuración ✓ Cancela en cualquier momento ✓ Prueba gratuita de 14 días',
+    
+    // Pricing
+    'pricing.title': 'Precios Simples y Transparentes',
+    'pricing.subtitle': 'Elige el plan que mejor se adapte a tus necesidades',
+    'pricing.popular': 'Más Popular',
+    'pricing.free.name': 'Gratis',
+    'pricing.free.price': '$0',
+    'pricing.free.period': 'mes',
+    'pricing.free.description': 'Perfecto para comenzar',
+    'pricing.free.cta': 'Comenzar',
+    'pricing.pro.name': 'Pro',
+    'pricing.pro.price': '$29',
+    'pricing.pro.period': 'mes',
+    'pricing.pro.description': 'Para negocios en crecimiento',
+    'pricing.pro.cta': 'Prueba Gratuita',
+    'pricing.team.name': 'Equipo',
+    'pricing.team.price': '$99',
+    'pricing.team.period': 'mes',
+    'pricing.team.description': 'Para equipos y empresas',
+    'pricing.team.cta': 'Contactar Ventas',
+    
+    // Características de los planes
+    'pricing.features.free.boilerplate': 'Configuración básica del boilerplate',
+    'pricing.features.free.auth': 'Plantillas de autenticación',
+    'pricing.features.free.projects': '1 proyecto',
+    'pricing.features.free.support': 'Soporte comunitario',
+    'pricing.features.free.docs': 'Documentación básica',
+    
+    'pricing.features.pro.boilerplate': 'Paquete completo de boilerplate',
+    'pricing.features.pro.auth': 'Auth + Pagos + Base de datos',
+    'pricing.features.pro.projects': 'Proyectos ilimitados',
+    'pricing.features.pro.components': 'Biblioteca de componentes premium',
+    'pricing.features.pro.support': 'Soporte prioritario',
+    'pricing.features.pro.deployment': 'Guías de despliegue',
+    'pricing.features.pro.updates': 'Actualizaciones de por vida',
+    
+    'pricing.features.team.everything': 'Todo lo del plan Pro',
+    'pricing.features.team.collaboration': 'Herramientas de colaboración en equipo',
+    'pricing.features.team.whitelabel': 'Opciones de marca blanca',
+    'pricing.features.team.integrations': 'Integraciones personalizadas',
+    'pricing.features.team.onboarding': 'Llamada de incorporación 1 a 1',
+    'pricing.features.team.components': 'Componentes personalizados',
+    'pricing.features.team.license': 'Licencia extendida',
+    
+    // Screenshots
+    'screenshots.title': 'Véalo en Acción',
+    'screenshots.subtitle': 'Eche un vistazo a algunas de las características y componentes clave incluidos en el boilerplate.',
+    
+    // Testimonials
+    'testimonials.title': 'Lo que Dicen Nuestros Usuarios',
+    'testimonials.subtitle': 'Únete a miles de desarrolladores satisfechos que han lanzado exitosamente sus aplicaciones.',
+    'testimonials.roles.indieDev': 'Desarrollador Independiente',
+    'testimonials.roles.freelancer': 'Freelancer',
+    'testimonials.roles.soloFounder': 'Fundador Independiente',
+    'testimonials.roles.fullstack': 'Desarrollador Full-stack',
+    'testimonials.content.alex': 'Lancé mi SaaS en 3 días en lugar de 3 meses. El boilerplate es limpio y el flujo de autenticación funciona perfectamente.',
+    'testimonials.content.sarah': 'Finalmente, un boilerplate que no se siente sobrecargado. Puse en marcha el MVP de mi cliente en un fin de semana.',
+    'testimonials.content.marcus': 'La integración de pagos me ahorró semanas. Ahora me enfoco en las características, no en la infraestructura.',
+    'testimonials.content.emma': 'Los mejores $49 que he gastado. Solo la configuración de TypeScript ya lo vale. Todo funciona perfectamente.',
+
+    // Contact
+    'contact.title': 'Contáctanos',
+    'contact.subtitle': '¿Tienes preguntas? Nos encantaría escucharte. Envíanos un mensaje y te responderemos lo antes posible.',
+    'contact.getInTouch': 'Ponte en Contacto',
+    'contact.emailUs': 'Escríbenos',
+    'contact.emailDescription': 'Envíanos un correo electrónico y te responderemos lo antes posible.',
+    'contact.responseTime': 'Tiempo de Respuesta',
+    'contact.responseDescription': 'Normalmente respondemos a todas las consultas dentro de las 24 horas en días laborables.',
+    'contact.form.name': 'Nombre',
+    'contact.form.namePlaceholder': 'Ingresa tu nombre',
+    'contact.form.email': 'Correo Electrónico',
+    'contact.form.emailPlaceholder': 'Ingresa tu correo electrónico',
+    'contact.form.subject': 'Asunto',
+    'contact.form.subjectPlaceholder': 'Ingresa el asunto',
+    'contact.form.message': 'Mensaje',
+    'contact.form.messagePlaceholder': 'Ingresa tu mensaje',
+    'contact.form.send': 'Enviar Mensaje',
+
+    // Footer
+    'footer.description': 'La forma más rápida de construir y lanzar tu MVP SaaS. Enfócate en tus características únicas, nosotros manejamos la estructura básica.',
+    'footer.product.title': 'Producto',
+    'footer.product.features': 'Características',
+    'footer.product.pricing': 'Precios',
+    'footer.product.documentation': 'Documentación',
+    'footer.product.changelog': 'Registro de cambios',
+    'footer.product.roadmap': 'Hoja de ruta',
+    'footer.support.title': 'Soporte',
+    'footer.support.contact': 'Contacto',
+    'footer.support.helpCenter': 'Centro de ayuda',
+    'footer.support.discord': 'Comunidad Discord',
+    'footer.support.status': 'Estado del servicio',
+    'footer.copyright': '© 2024 LaunchFast. Todos los derechos reservados.',
+    'footer.privacy': 'Política de privacidad',
+    'footer.terms': 'Términos de servicio',
   }
 };
 

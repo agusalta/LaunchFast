@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Testimonials = () => {
@@ -7,30 +6,30 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: "Alex Chen",
-      role: "Indie Developer",
+      role: t('testimonials.roles.indieDev'),
       avatar: "AC",
-      content: "Shipped my SaaS in 3 days instead of 3 months. The boilerplate is clean and the auth flow just works.",
+      content: t('testimonials.content.alex'),
       project: "TaskFlow"
     },
     {
       name: "Sarah Kim",
-      role: "Freelancer",
+      role: t('testimonials.roles.freelancer'),
       avatar: "SK",
-      content: "Finally, a boilerplate that doesn't feel bloated. Got my client's MVP live in a weekend.",
+      content: t('testimonials.content.sarah'),
       project: "ClientPortal"
     },
     {
       name: "Marcus Rodriguez",
-      role: "Solo Founder",
+      role: t('testimonials.roles.soloFounder'),
       avatar: "MR",
-      content: "The payment integration saved me weeks. Now I focus on features, not infrastructure.",
+      content: t('testimonials.content.marcus'),
       project: "DesignFeedback"
     },
     {
       name: "Emma Thompson",
-      role: "Full-stack Dev",
+      role: t('testimonials.roles.fullstack'),
       avatar: "ET",
-      content: "Best $49 I've spent. The TypeScript setup alone is worth it. Everything just works.",
+      content: t('testimonials.content.emma'),
       project: "LocalEats"
     }
   ];

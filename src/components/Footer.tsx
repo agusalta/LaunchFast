@@ -1,5 +1,8 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
@@ -9,8 +12,7 @@ const Footer = () => {
               LaunchFast
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
-              The fastest way to build and ship your SaaS MVP. 
-              Focus on your unique features, we'll handle the boilerplate.
+              {t('footer.description')}
             </p>
             <div className="flex space-x-4">
               <a 
@@ -43,30 +45,30 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-white mb-4">Product</h3>
+            <h3 className="font-semibold text-white mb-4">{t('footer.product.title')}</h3>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Changelog</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Roadmap</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">{t('footer.product.features')}</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">{t('footer.product.pricing')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.product.documentation')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.product.changelog')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.product.roadmap')}</a></li>
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold text-white mb-4">Support</h3>
+            <h3 className="font-semibold text-white mb-4">{t('footer.support.title')}</h3>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Discord Community</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Status Page</a></li>
+              <li><a href="#contact" className="hover:text-white transition-colors">{t('footer.support.contact')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.support.helpCenter')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.support.discord')}</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">{t('footer.support.status')}</a></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>&copy; 2024 LaunchFast. All rights reserved.</p>
+          <p>{t('footer.copyright')}</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">{t('footer.privacy')}</a>
+            <a href="#" className="hover:text-white transition-colors">{t('footer.terms')}</a>
           </div>
         </div>
       </div>
