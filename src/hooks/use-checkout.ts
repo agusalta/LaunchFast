@@ -18,12 +18,13 @@ export const useCheckout = () => {
     }
 
     try {
-      if (!plan.priceId) {
+      if (!plan.priceId || plan.isFree) {
         await activateFreePlan(plan);
       } else {
         await redirectToStripeCheckout(plan);
       }
     } catch (error) {
+      console.error('Plan selection error:', error);
       toast({
         title: "Error",
         description: "Failed to process plan selection",
@@ -33,6 +34,10 @@ export const useCheckout = () => {
   };
 
   const activateFreePlan = async (plan: any) => {
+    const trialEndDate = plan.name.toLowerCase().includes('trial') 
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      : null;
+
     const { error } = await supabase
       .from('subscriptions')
       .upsert({
@@ -40,43 +45,44 @@ export const useCheckout = () => {
         plan_name: plan.name,
         status: 'active',
         price: 0,
-        trial_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        trial_ends_at: trialEndDate,
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'user_id'
       });
 
     if (error) throw error;
 
     toast({
       title: "Plan activated",
-      description: `Welcome to ${plan.name}! Your free trial has started.`,
+      description: `Welcome to ${plan.name}! Your plan has been activated.`,
     });
 
-    window.location.href = '/dashboard';
+    window.location.href = '/dashboard?success=true';
   };
 
   const redirectToStripeCheckout = async (plan: any) => {
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+      body: {
         priceId: plan.priceId,
         userId: user!.id,
         planName: plan.name,
         successUrl: `${window.location.origin}/dashboard?success=true`,
-        cancelUrl: `${window.location.origin}/pricing?canceled=true`,
-      }),
+        cancelUrl: `${window.location.origin}/#pricing?canceled=true`,
+      },
     });
 
-    const { sessionId, error } = await response.json();
+    if (error) throw error;
 
-    if (error) throw new Error(error);
-
-    const stripe = await import('@stripe/stripe-js').then(m => m.loadStripe(
-      'pk_test_51234567890123456789012345678901234567890123456789012345678901234567890123456789'
-    ));
-    
-    await stripe?.redirectToCheckout({ sessionId });
+    if (data?.sessionId) {
+      const stripe = await import('@stripe/stripe-js').then(m => m.loadStripe(
+        'pk_test_51QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV'
+      ));
+      
+      await stripe?.redirectToCheckout({ sessionId: data.sessionId });
+    } else {
+      throw new Error('No session ID returned');
+    }
   };
 
   return { handlePlanSelection };

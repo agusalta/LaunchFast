@@ -3,10 +3,31 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
+import SubscriptionStatus from '@/components/SubscriptionStatus';
+import { useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useSubscription } from '@/hooks/use-subscription';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const { t } = useLanguage();
+  const { toast } = useToast();
+  const { refreshSubscription } = useSubscription();
+
+  useEffect(() => {
+    // Check for success parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+      toast({
+        title: "Payment successful!",
+        description: "Your subscription has been activated.",
+      });
+      // Refresh subscription data
+      refreshSubscription();
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [toast, refreshSubscription]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -30,6 +51,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Welcome Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               {t('dashboard.welcome') || 'Welcome to your dashboard!'}
@@ -45,6 +67,11 @@ const Dashboard = () => {
                 <strong>{t('dashboard.userId') || 'User ID'}:</strong> {user?.id}
               </p>
             </div>
+          </div>
+
+          {/* Subscription Status */}
+          <div className="mb-8">
+            <SubscriptionStatus />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
