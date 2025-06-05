@@ -1,13 +1,75 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSubscription } from '@/hooks/use-subscription';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import { Calendar, CreditCard, Package } from 'lucide-react';
+import { useState } from 'react';
 
 const SubscriptionStatus = () => {
   const { subscription, loading, refreshSubscription } = useSubscription();
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [refreshing, setRefreshing] = useState(false);
+  const [redirectingToPortal, setRedirectingToPortal] = useState(false);
+
+  const handleRefresh = async () => {
+    if (!user) return;
+    
+    setRefreshing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('refresh-subscription');
+      
+      if (error) throw error;
+      
+      // Refresh the local subscription data
+      refreshSubscription();
+      
+      toast({
+        title: "Subscription refreshed",
+        description: "Your subscription status has been updated.",
+      });
+    } catch (error) {
+      console.error('Error refreshing subscription:', error);
+      toast({
+        title: "Error",
+        description: "Failed to refresh subscription status",
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const handleChangePlan = async () => {
+    if (!user) return;
+    
+    setRedirectingToPortal(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('stripe-portal');
+      
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No portal URL returned');
+      }
+    } catch (error) {
+      console.error('Error accessing portal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to access billing portal",
+        variant: "destructive",
+      });
+      setRedirectingToPortal(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -89,11 +151,18 @@ const SubscriptionStatus = () => {
         )}
 
         <div className="flex gap-2">
-          <Button variant="outline" onClick={refreshSubscription}>
-            {t('subscription.refresh') || 'Refresh'}
+          <Button 
+            variant="outline" 
+            onClick={handleRefresh}
+            disabled={refreshing}
+          >
+            {refreshing ? 'Refreshing...' : t('subscription.refresh') || 'Refresh'}
           </Button>
-          <Button onClick={() => window.location.href = '/#pricing'}>
-            {t('subscription.changePlan') || 'Change Plan'}
+          <Button 
+            onClick={handleChangePlan}
+            disabled={redirectingToPortal}
+          >
+            {redirectingToPortal ? 'Redirecting...' : t('subscription.changePlan') || 'Change Plan'}
           </Button>
         </div>
       </CardContent>
