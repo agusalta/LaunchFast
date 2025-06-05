@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useStripeCheckout } from "@/hooks/use-stripe-checkout";
 
 const Pricing = () => {
   const { t } = useLanguage();
+  const { handleCheckout } = useStripeCheckout();
 
   const plans = [
     {
@@ -19,7 +21,8 @@ const Pricing = () => {
         t('pricing.features.free.docs')
       ],
       cta: t('pricing.free.cta'),
-      popular: false
+      popular: false,
+      priceId: null
     },
     {
       name: t('pricing.pro.name'),
@@ -36,7 +39,8 @@ const Pricing = () => {
         t('pricing.features.pro.updates')
       ],
       cta: t('pricing.pro.cta'),
-      popular: true
+      popular: true,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID
     },
     {
       name: t('pricing.team.name'),
@@ -53,7 +57,8 @@ const Pricing = () => {
         t('pricing.features.team.license')
       ],
       cta: t('pricing.team.cta'),
-      popular: false
+      popular: false,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_TEAM_PRICE_ID
     }
   ];
 
@@ -108,6 +113,7 @@ const Pricing = () => {
                     : 'bg-gray-900 hover:bg-gray-800'
                 }`}
                 size="lg"
+                onClick={() => plan.priceId && handleCheckout(plan.priceId)}
               >
                 {plan.cta}
               </Button>
