@@ -176,6 +176,19 @@ const translations = {
     'footer.copyright': '© 2024 LaunchFast. All rights reserved.',
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
+
+    // Subscription
+    'subscription.currentPlan': 'Current Plan',
+    'subscription.manageSubscription': 'Manage your subscription and billing information.',
+    'subscription.noActivePlan': 'No Active Plan',
+    'subscription.choosePlan': 'Choose a plan to get started with premium features.',
+    'subscription.viewPlans': 'View Plans',
+    'subscription.free': 'Free',
+    'subscription.notAvailable': 'N/A',
+    'subscription.active': 'Active',
+    'subscription.trialEnds': 'Trial ends',
+    'subscription.refresh': 'Refresh',
+    'subscription.changePlan': 'Change Plan',
   },
   es: {
     // Header
@@ -344,6 +357,19 @@ const translations = {
     'footer.copyright': '© 2024 LaunchFast. Todos los derechos reservados.',
     'footer.privacy': 'Política de privacidad',
     'footer.terms': 'Términos de servicio',
+
+    // Subscription
+    'subscription.currentPlan': 'Plan Actual',
+    'subscription.manageSubscription': 'Gestiona tu suscripción e información de facturación.',
+    'subscription.noActivePlan': 'Sin Plan Activo',
+    'subscription.choosePlan': 'Elige un plan para comenzar con funciones premium.',
+    'subscription.viewPlans': 'Ver Planes',
+    'subscription.free': 'Gratis',
+    'subscription.notAvailable': 'N/D',
+    'subscription.active': 'Activo',
+    'subscription.trialEnds': 'Prueba termina',
+    'subscription.refresh': 'Actualizar',
+    'subscription.changePlan': 'Cambiar Plan',
   }
 };
 

@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,12 +47,12 @@ const SubscriptionStatus = () => {
   }
 
   const formatPrice = (price: number | null) => {
-    if (price === null || price === 0) return 'Free';
+    if (price === null || price === 0) return t('subscription.free') || 'Free';
     return `$${(price / 100).toFixed(2)}`;
   };
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
+    if (!dateString) return t('subscription.notAvailable') || 'N/A';
     return new Date(dateString).toLocaleDateString();
   };
 
@@ -78,14 +77,14 @@ const SubscriptionStatus = () => {
             variant={subscription.status === 'active' ? 'default' : 'secondary'}
             className={subscription.status === 'active' ? 'bg-green-500' : ''}
           >
-            {subscription.status === 'active' ? 'Active' : subscription.status}
+            {subscription.status === 'active' ? t('subscription.active') || 'Active' : subscription.status}
           </Badge>
         </div>
 
         {subscription.trial_ends_at && (
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Calendar className="h-4 w-4" />
-            <span>Trial ends: {formatDate(subscription.trial_ends_at)}</span>
+            <span>{t('subscription.trialEnds') || 'Trial ends'}: {formatDate(subscription.trial_ends_at)}</span>
           </div>
         )}
 

@@ -1,12 +1,23 @@
-
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCheckout } from "@/hooks/use-checkout";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const { t } = useLanguage();
   const { handlePlanSelection } = useCheckout();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handlePlanClick = (plan: any) => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    handlePlanSelection(plan);
+  };
 
   const plans = [
     {
@@ -117,7 +128,7 @@ const Pricing = () => {
                     : 'bg-gray-900 hover:bg-gray-800'
                 }`}
                 size="lg"
-                onClick={() => handlePlanSelection(plan)}
+                onClick={() => handlePlanClick(plan)}
               >
                 {plan.cta}
               </Button>
