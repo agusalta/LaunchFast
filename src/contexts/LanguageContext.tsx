@@ -27,12 +27,12 @@ const translations = {
     'hero.ctaSecondary': 'View Demo',
     'hero.goToDashboard': 'Go to Dashboard',
     'hero.noCredit': 'No credit card required • Free 14-day trial',
-    'hero.stat1': '10k+',
+    'hero.stat1': '50k+',
     'hero.stat1Label': 'Active Users',
-    'hero.stat2': '99.9%',
+    'hero.stat2': '99.95%',
     'hero.stat2Label': 'Uptime',
-    'hero.stat3': '24/7',
-    'hero.stat3Label': 'Support',
+    'hero.stat3': '15min',
+    'hero.stat3Label': 'Response Time',
     
     // Features
     'features.title': 'Everything You Need to Launch',
@@ -208,12 +208,12 @@ const translations = {
     'hero.ctaSecondary': 'Ver Demo',
     'hero.goToDashboard': 'Ir al Panel',
     'hero.noCredit': 'No se requiere tarjeta de crédito • Prueba gratuita de 14 días',
-    'hero.stat1': '10k+',
+    'hero.stat1': '50k+',
     'hero.stat1Label': 'Usuarios Activos',
-    'hero.stat2': '99.9%',
+    'hero.stat2': '99.95%',
     'hero.stat2Label': 'Tiempo Activo',
-    'hero.stat3': '24/7',
-    'hero.stat3Label': 'Soporte',
+    'hero.stat3': '15min',
+    'hero.stat3Label': 'Tiempo de Respuesta',
     
     // Features
     'features.title': 'Todo lo que Necesitas para Lanzar',

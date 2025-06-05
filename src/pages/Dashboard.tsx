@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -7,6 +6,8 @@ import SubscriptionStatus from '@/components/SubscriptionStatus';
 import { useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useSubscription } from '@/hooks/use-subscription';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -34,7 +35,9 @@ const Dashboard = () => {
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">LaunchFast Dashboard</h1>
+          <Link to="/" className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
+            LaunchFast Dashboard
+          </Link>
           <div className="flex items-center space-x-4">
             <LanguageToggle />
             <Button
