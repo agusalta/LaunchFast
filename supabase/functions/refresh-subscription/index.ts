@@ -16,7 +16,7 @@ serve(async (req) => {
   try {
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
     const authHeader = req.headers.get("Authorization");
@@ -31,6 +31,10 @@ serve(async (req) => {
     }
 
     const user = userData.user;
+
+    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+      apiVersion: "2023-10-16",
+    });
 
     // Get user's subscription from Supabase
     const { data: subscription, error: subError } = await supabaseClient
@@ -51,11 +55,6 @@ serve(async (req) => {
     }
 
     // If we have a subscription, refresh it from Stripe
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-      apiVersion: "2023-10-16",
-    });
-
-    // Find the customer in Stripe by email
     const customers = await stripe.customers.list({
       email: user.email,
       limit: 1,

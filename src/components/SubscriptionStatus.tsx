@@ -7,23 +7,28 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Calendar, CreditCard, Package } from 'lucide-react';
+import { Calendar, CreditCard, Package, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 
 const SubscriptionStatus = () => {
   const { subscription, loading, refreshSubscription } = useSubscription();
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { toast } = useToast();
   const [refreshing, setRefreshing] = useState(false);
   const [redirectingToPortal, setRedirectingToPortal] = useState(false);
+  const [processingRefund, setProcessingRefund] = useState(false);
 
   const handleRefresh = async () => {
-    if (!user) return;
+    if (!user || !session) return;
     
     setRefreshing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('refresh-subscription');
+      const { data, error } = await supabase.functions.invoke('refresh-subscription', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
       
       if (error) throw error;
       
@@ -47,11 +52,15 @@ const SubscriptionStatus = () => {
   };
 
   const handleChangePlan = async () => {
-    if (!user) return;
+    if (!user || !session) return;
     
     setRedirectingToPortal(true);
     try {
-      const { data, error } = await supabase.functions.invoke('stripe-portal');
+      const { data, error } = await supabase.functions.invoke('stripe-portal', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
       
       if (error) throw error;
       
@@ -68,6 +77,41 @@ const SubscriptionStatus = () => {
         variant: "destructive",
       });
       setRedirectingToPortal(false);
+    }
+  };
+
+  const handleRequestRefund = async () => {
+    if (!user || !session) return;
+    
+    setProcessingRefund(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('stripe-refund', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+      
+      if (error) throw error;
+      
+      if (data?.success) {
+        toast({
+          title: "Refund processed",
+          description: `Refund of $${(data.refund.amount / 100).toFixed(2)} has been processed successfully.`,
+        });
+        // Refresh subscription status after refund
+        refreshSubscription();
+      } else {
+        throw new Error('Refund processing failed');
+      }
+    } catch (error) {
+      console.error('Error processing refund:', error);
+      toast({
+        title: "Refund failed",
+        description: error.message || "Failed to process refund",
+        variant: "destructive",
+      });
+    } finally {
+      setProcessingRefund(false);
     }
   };
 
@@ -150,20 +194,35 @@ const SubscriptionStatus = () => {
           </div>
         )}
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button 
             variant="outline" 
+            size="sm"
             onClick={handleRefresh}
             disabled={refreshing}
           >
+            <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? 'animate-spin' : ''}`} />
             {refreshing ? 'Refreshing...' : t('subscription.refresh') || 'Refresh'}
           </Button>
+          
           <Button 
+            size="sm"
             onClick={handleChangePlan}
             disabled={redirectingToPortal}
           >
             {redirectingToPortal ? 'Redirecting...' : t('subscription.changePlan') || 'Change Plan'}
           </Button>
+          
+          {subscription.status === 'active' && subscription.price && subscription.price > 0 && (
+            <Button 
+              variant="destructive"
+              size="sm"
+              onClick={handleRequestRefund}
+              disabled={processingRefund}
+            >
+              {processingRefund ? 'Processing...' : 'Request Refund'}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
