@@ -1,73 +1,158 @@
-# Welcome to your Lovable project
+# 🚀 Launch Spark MVP
 
-## Project info
+<div align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+</div>
 
-**URL**: https://lovable.dev/projects/a044fd83-b548-4ce7-b1a4-1bacb94e9667
+## 📋 Descripción
 
-## How can I edit this code?
+Launch Spark MVP es una plataforma SaaS moderna diseñada para ayudar a emprendedores y startups a lanzar sus productos de manera eficiente. Nuestra plataforma ofrece herramientas intuitivas y potentes para gestionar el ciclo completo de lanzamiento de productos.
 
-There are several ways of editing your application.
+## ✨ Características Principales
 
-**Use Lovable**
+- 🎯 **Gestión de Productos**: Administra todos tus productos en un solo lugar
+- 📊 **Analíticas en Tiempo Real**: Obtén insights valiosos sobre el rendimiento de tus lanzamientos
+- 👥 **Gestión de Usuarios**: Sistema robusto de autenticación y autorización
+- 🎨 **Interfaz Moderna**: Diseño limpio y profesional con Tailwind CSS y shadcn/ui
+- 📱 **Responsive Design**: Experiencia perfecta en todos los dispositivos
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a044fd83-b548-4ce7-b1a4-1bacb94e9667) and start prompting.
+## 🛠️ Tecnologías Utilizadas
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend**:
+  - React 18
+  - TypeScript
+  - Tailwind CSS
+  - shadcn/ui
+  - Vite
 
-**Use your preferred IDE**
+- **Backend**:
+  - Node.js
+  - Express
+  - MongoDB
+  - JWT Authentication
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Comenzando
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerrequisitos
 
-Follow these steps:
+- Node.js (v16 o superior)
+- npm o yarn
+- Git
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Instalación
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clona el repositorio:
+```bash
+git clone https://github.com/tu-usuario/launch-spark-mvp.git
+cd launch-spark-mvp
 ```
 
-**Edit a file directly in GitHub**
+2. Instala las dependencias:
+```bash
+npm install
+# o
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Configura las variables de entorno:
+```bash
+cp .env.example .env
+```
 
-**Use GitHub Codespaces**
+4. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+# o
+yarn dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📦 Estructura del Proyecto
 
-## What technologies are used for this project?
+```
+launch-spark-mvp/
+├── src/
+│   ├── components/     # Componentes reutilizables
+│   ├── pages/         # Páginas de la aplicación
+│   ├── hooks/         # Custom hooks
+│   ├── services/      # Servicios y APIs
+│   ├── utils/         # Utilidades y helpers
+│   └── types/         # Definiciones de TypeScript
+├── public/            # Archivos estáticos
+└── tests/            # Tests unitarios y de integración
+```
 
-This project is built with:
+## 🔧 Configuración
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Variables de Entorno
 
-## How can I deploy this project?
+```env
+VITE_API_URL=http://localhost:3000
+VITE_APP_NAME=Launch Spark
+VITE_APP_VERSION=1.0.0
+```
 
-Simply open [Lovable](https://lovable.dev/projects/a044fd83-b548-4ce7-b1a4-1bacb94e9667) and click on Share -> Publish.
+## 🧪 Testing
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+# Ejecutar tests unitarios
+npm run test
 
-Yes, you can!
+# Ejecutar tests de integración
+npm run test:integration
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# Ejecutar tests con cobertura
+npm run test:coverage
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📈 Despliegue
+
+### Producción
+
+```bash
+# Construir para producción
+npm run build
+
+# Vista previa de la build
+npm run preview
+```
+
+### Docker
+
+```bash
+# Construir la imagen
+docker build -t launch-spark-mvp .
+
+# Ejecutar el contenedor
+docker run -p 3000:3000 launch-spark-mvp
+```
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea tu rama de características (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
+
+## 📞 Soporte
+
+Para soporte, email support@launchspark.com o únete a nuestro [Discord](https://discord.gg/launchspark).
+
+## 🙏 Agradecimientos
+
+- [shadcn/ui](https://ui.shadcn.com/) por los componentes increíbles
+- [Tailwind CSS](https://tailwindcss.com/) por el framework CSS
+- [Vite](https://vitejs.dev/) por el bundler rápido
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ by the Launch Spark Team</sub>
+</div>
