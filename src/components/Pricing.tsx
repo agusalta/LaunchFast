@@ -53,7 +53,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.pro.cta'),
       popular: true,
-      priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || 'price_1234567890',
+      priceId: import.meta.env.VITE_STRIPE_PRO_PRICE_ID || 'price_1234567890',
       isFree: false
     },
     {
@@ -72,7 +72,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.team.cta'),
       popular: false,
-      priceId: process.env.NEXT_PUBLIC_STRIPE_TEAM_PRICE_ID || 'price_0987654321',
+      priceId: import.meta.env.VITE_STRIPE_TEAM_PRICE_ID || 'price_0987654321',
       isFree: false
     }
   ];
