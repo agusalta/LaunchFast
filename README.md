@@ -5,21 +5,23 @@
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
 </div>
 
-## 📋 Descripción
+## 📋 Description
 
-Launch Spark MVP es una plataforma SaaS moderna diseñada para ayudar a emprendedores y startups a lanzar sus productos de manera eficiente. Nuestra plataforma ofrece herramientas intuitivas y potentes para gestionar el ciclo completo de lanzamiento de productos.
+Launch Spark MVP is a modern SaaS platform designed to help entrepreneurs and startups launch their products efficiently. Our platform offers intuitive and powerful tools to manage the complete product launch cycle.
 
-## ✨ Características Principales
+## ✨ Key Features
 
-- 🎯 **Gestión de Productos**: Administra todos tus productos en un solo lugar
-- 📊 **Analíticas en Tiempo Real**: Obtén insights valiosos sobre el rendimiento de tus lanzamientos
-- 👥 **Gestión de Usuarios**: Sistema robusto de autenticación y autorización
-- 🎨 **Interfaz Moderna**: Diseño limpio y profesional con Tailwind CSS y shadcn/ui
-- 📱 **Responsive Design**: Experiencia perfecta en todos los dispositivos
+- 🎯 **Product Management**: Manage all your products in one place
+- 📊 **Real-time Analytics**: Get valuable insights about your launch performance
+- 👥 **User Management**: Robust authentication and authorization system
+- 🎨 **Modern Interface**: Clean and professional design with Tailwind CSS and shadcn/ui
+- 📱 **Responsive Design**: Perfect experience across all devices
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Technologies Used
 
 - **Frontend**:
   - React 18
@@ -28,65 +30,67 @@ Launch Spark MVP es una plataforma SaaS moderna diseñada para ayudar a emprende
   - shadcn/ui
   - Vite
 
-- **Backend**:
+- **Backend & Services**:
+  - Supabase (Authentication & Database)
+  - Stripe (Payments)
   - Node.js
   - Express
   - MongoDB
   - JWT Authentication
 
-## 🚀 Comenzando
+## 🚀 Getting Started
 
-### Prerrequisitos
+### Prerequisites
 
-- Node.js (v16 o superior)
-- npm o yarn
+- Node.js (v16 or higher)
+- npm or yarn
 - Git
 
-### Instalación
+### Installation
 
-1. Clona el repositorio:
+1. Clone the repository:
 ```bash
-git clone https://github.com/tu-usuario/launch-spark-mvp.git
+git clone https://github.com/your-username/launch-spark-mvp.git
 cd launch-spark-mvp
 ```
 
-2. Instala las dependencias:
+2. Install dependencies:
 ```bash
 npm install
-# o
+# or
 yarn install
 ```
 
-3. Configura las variables de entorno:
+3. Set up environment variables:
 ```bash
 cp .env.example .env
 ```
 
-4. Inicia el servidor de desarrollo:
+4. Start the development server:
 ```bash
 npm run dev
-# o
+# or
 yarn dev
 ```
 
-## 📦 Estructura del Proyecto
+## 📦 Project Structure
 
 ```
 launch-spark-mvp/
 ├── src/
-│   ├── components/     # Componentes reutilizables
-│   ├── pages/         # Páginas de la aplicación
+│   ├── components/     # Reusable components
+│   ├── pages/         # Application pages
 │   ├── hooks/         # Custom hooks
-│   ├── services/      # Servicios y APIs
-│   ├── utils/         # Utilidades y helpers
-│   └── types/         # Definiciones de TypeScript
-├── public/            # Archivos estáticos
-└── tests/            # Tests unitarios y de integración
+│   ├── services/      # Services and APIs
+│   ├── utils/         # Utilities and helpers
+│   └── types/         # TypeScript definitions
+├── public/            # Static files
+└── tests/            # Unit and integration tests
 ```
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Variables de Entorno
+### Environment Variables
 
 ```env
 VITE_API_URL=http://localhost:3000
@@ -97,59 +101,59 @@ VITE_APP_VERSION=1.0.0
 ## 🧪 Testing
 
 ```bash
-# Ejecutar tests unitarios
+# Run unit tests
 npm run test
 
-# Ejecutar tests de integración
+# Run integration tests
 npm run test:integration
 
-# Ejecutar tests con cobertura
+# Run tests with coverage
 npm run test:coverage
 ```
 
-## 📈 Despliegue
+## 📈 Deployment
 
-### Producción
+### Production
 
 ```bash
-# Construir para producción
+# Build for production
 npm run build
 
-# Vista previa de la build
+# Preview the build
 npm run preview
 ```
 
 ### Docker
 
 ```bash
-# Construir la imagen
+# Build the image
 docker build -t launch-spark-mvp .
 
-# Ejecutar el contenedor
+# Run the container
 docker run -p 3000:3000 launch-spark-mvp
 ```
 
-## 🤝 Contribución
+## 🤝 Contributing
 
-1. Fork el proyecto
-2. Crea tu rama de características (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📝 Licencia
+## 📝 License
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## 📞 Soporte
+## 📞 Support
 
-Para soporte, email support@launchspark.com o únete a nuestro [Discord](https://discord.gg/launchspark).
+For support, email support@launchspark.com or join our [Discord](https://discord.gg/launchspark).
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-- [shadcn/ui](https://ui.shadcn.com/) por los componentes increíbles
-- [Tailwind CSS](https://tailwindcss.com/) por el framework CSS
-- [Vite](https://vitejs.dev/) por el bundler rápido
+- [shadcn/ui](https://ui.shadcn.com/) for the amazing components
+- [Tailwind CSS](https://tailwindcss.com/) for the CSS framework
+- [Vite](https://vitejs.dev/) for the fast bundler
 
 ---
 
