@@ -13,19 +13,28 @@ export type Database = {
         Row: {
           created_at: string
           email: string | null
+          email_notifications: boolean | null
+          first_name: string | null
           id: string
+          last_name: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           email?: string | null
+          email_notifications?: boolean | null
+          first_name?: string | null
           id: string
+          last_name?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           email?: string | null
+          email_notifications?: boolean | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -59,6 +68,42 @@ export type Database = {
           status?: string
           trial_ends_at?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_analytics: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_login_at: string | null
+          last_payment_amount: number | null
+          last_payment_at: string | null
+          login_count: number | null
+          payment_count: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_login_at?: string | null
+          last_payment_amount?: number | null
+          last_payment_at?: string | null
+          login_count?: number | null
+          payment_count?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_login_at?: string | null
+          last_payment_amount?: number | null
+          last_payment_at?: string | null
+          login_count?: number | null
+          payment_count?: number | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []

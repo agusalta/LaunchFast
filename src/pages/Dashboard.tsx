@@ -1,13 +1,17 @@
+
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import SubscriptionStatus from '@/components/SubscriptionStatus';
-import { useEffect } from 'react';
+import Analytics from '@/components/Analytics';
+import ProfileSettings from '@/components/ProfileSettings';
+import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useSubscription } from '@/hooks/use-subscription';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart3, User, CreditCard } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -53,7 +57,7 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Welcome Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -72,36 +76,38 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Subscription Status */}
-          <div className="mb-8">
-            <SubscriptionStatus />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {t('dashboard.profile') || 'Profile Settings'}
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                {t('dashboard.profileDesc') || 'Manage your account settings and preferences.'}
-              </p>
-              <Button variant="outline" className="w-full">
-                {t('dashboard.viewProfile') || 'View Profile'}
-              </Button>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          {/* Dashboard Tabs */}
+          <Tabs defaultValue="subscription" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="subscription" className="flex items-center gap-2">
+                <CreditCard className="h-4 w-4" />
+                {t('dashboard.subscription') || 'Subscription'}
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
                 {t('dashboard.analytics') || 'Analytics'}
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
-                {t('dashboard.analyticsDesc') || 'View your usage statistics and insights.'}
-              </p>
-              <Button variant="outline" className="w-full">
-                {t('dashboard.viewAnalytics') || 'View Analytics'}
-              </Button>
-            </div>
+              </TabsTrigger>
+              <TabsTrigger value="profile" className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                {t('dashboard.profile') || 'Profile'}
+              </TabsTrigger>
+            </TabsList>
 
+            <TabsContent value="subscription">
+              <SubscriptionStatus />
+            </TabsContent>
+
+            <TabsContent value="analytics">
+              <Analytics />
+            </TabsContent>
+
+            <TabsContent value="profile">
+              <ProfileSettings />
+            </TabsContent>
+          </Tabs>
+
+          {/* Quick Actions (kept for compatibility) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {t('dashboard.support') || 'Support'}
