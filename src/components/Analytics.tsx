@@ -1,11 +1,11 @@
-
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useSubscription } from '@/hooks/use-subscription';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BarChart3, Calendar, CreditCard, User } from 'lucide-react';
 
-const Analytics = () => {
+const Analytics: React.FC = () => {
   const { analytics, loading } = useAnalytics();
   const { subscription } = useSubscription();
   const { t } = useLanguage();
