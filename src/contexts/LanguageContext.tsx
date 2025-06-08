@@ -1,10 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
 
-type Language = 'en' | 'es';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
+  language: 'en' | 'es';
+  toggleLanguage: () => void;
   t: (key: string) => string;
 }
 
@@ -17,178 +16,144 @@ const translations = {
     'header.startFree': 'Start Free',
     'header.dashboard': 'Dashboard',
     'header.signOut': 'Sign Out',
-    
+
     // Hero
-    'hero.title': 'Launch Your SaaS',
-    'hero.titleHighlight': 'Fast',
-    'hero.titleEnd': ' and Scale',
-    'hero.subtitle': 'The complete toolkit to build, deploy, and scale your SaaS application with modern technologies.',
-    'hero.ctaPrimary': 'Get Started Free',
-    'hero.ctaSecondary': 'View Demo',
-    'hero.goToDashboard': 'Go to Dashboard',
-    'hero.noCredit': 'No credit card required • Free 14-day trial',
-    'hero.stat1': '50k+',
-    'hero.stat1Label': 'Active Users',
-    'hero.stat2': '99.95%',
-    'hero.stat2Label': 'Uptime',
-    'hero.stat3': '15min',
-    'hero.stat3Label': 'Response Time',
-    
+    'hero.title': 'Launch Your SaaS in Days, Not Months',
+    'hero.subtitle': 'Complete React boilerplate with authentication, payments, and deployment ready. Focus on building features, not infrastructure.',
+    'hero.cta': 'Start Building Now',
+    'hero.secondary': 'View Live Demo',
+
     // Features
     'features.title': 'Everything You Need to Launch',
-    'features.subtitle': 'Built with the latest technologies and best practices for modern web applications.',
-    'features.auth.title': 'Authentication & Authorization',
-    'features.auth.description': 'Complete user management with secure authentication, role-based access control, and social login options.',
-    'features.payment.title': 'Payment Processing',
-    'features.payment.description': 'Integrated Stripe payments with subscription management, invoicing, and automated billing.',
-    'features.database.title': 'Database & Storage',
-    'features.database.description': 'PostgreSQL database with Supabase integration, real-time updates, and file storage capabilities.',
-    'features.tech.title': 'Modern Tech Stack',
-    'features.tech.description': 'Built with React, TypeScript, Tailwind CSS, and other cutting-edge technologies.',
-    'features.deploy.title': 'Easy Deployment',
-    'features.deploy.description': 'One-click deployment to Vercel, Netlify, or your preferred hosting platform.',
-    'features.dx.title': 'Developer Experience',
-    'features.dx.description': 'Hot reload, TypeScript support, ESLint, Prettier, and comprehensive documentation.',
-    
-    // Auth
-    'auth.signUp': 'Sign Up',
-    'auth.signIn': 'Sign In',
-    'auth.signOut': 'Sign Out',
-    'auth.email': 'Email',
-    'auth.password': 'Password',
-    'auth.emailPlaceholder': 'Enter your email',
-    'auth.passwordPlaceholder': 'Enter your password',
-    'auth.haveAccount': 'Already have an account?',
-    'auth.noAccount': "Don't have an account?",
-    'auth.backToHome': 'Back to home',
-    
-    // Dashboard
-    'dashboard.welcome': 'Welcome to your dashboard!',
-    'dashboard.welcomeMessage': 'You are successfully logged in. Here you can manage your account and access all features.',
-    'dashboard.email': 'Email',
-    'dashboard.userId': 'User ID',
-    'dashboard.profile': 'Profile Settings',
-    'dashboard.profileDesc': 'Manage your account settings and preferences.',
-    'dashboard.viewProfile': 'View Profile',
-    'dashboard.analytics': 'Analytics',
-    'dashboard.analyticsDesc': 'View your usage statistics and insights.',
-    'dashboard.viewAnalytics': 'View Analytics',
-    'dashboard.support': 'Support',
-    'dashboard.supportDesc': 'Get help and contact our support team.',
-    'dashboard.contactSupport': 'Contact Support',
-    
-    // CTA
-    'cta.title': 'Ready to Launch Your SaaS?',
-    'cta.subtitle': 'Join thousands of developers who have already launched successful applications.',
-    'cta.button': 'Start Building Today',
-    'cta.benefits': '✓ No setup fees ✓ Cancel anytime ✓ 14-day free trial',
-    
+    'features.subtitle': 'Built with modern technologies and best practices',
+    'features.auth.title': 'Authentication Ready',
+    'features.auth.description': 'Complete user authentication with Supabase Auth including social logins',
+    'features.payments.title': 'Payment Integration',
+    'features.payments.description': 'Stripe integration for subscriptions and one-time payments',
+    'features.database.title': 'Database & API',
+    'features.database.description': 'PostgreSQL database with real-time subscriptions and auto-generated APIs',
+    'features.ui.title': 'Modern UI Components',
+    'features.ui.description': 'Beautiful, responsive components built with Tailwind CSS and shadcn/ui',
+    'features.deployment.title': 'Deploy Anywhere',
+    'features.deployment.description': 'Deploy to Vercel, Netlify, or any static hosting platform',
+    'features.typescript.title': 'TypeScript Ready',
+    'features.typescript.description': 'Fully typed codebase for better development experience',
+
     // Pricing
     'pricing.title': 'Simple, Transparent Pricing',
-    'pricing.subtitle': 'Choose the plan that best fits your needs',
+    'pricing.subtitle': 'Choose the plan that fits your needs',
     'pricing.popular': 'Most Popular',
-    'pricing.free.name': 'Free',
-    'pricing.free.price': '$0',
-    'pricing.free.period': 'month',
+    'pricing.free.name': 'Starter',
+    'pricing.free.price': 'Free',
+    'pricing.free.period': 'forever',
     'pricing.free.description': 'Perfect for getting started',
-    'pricing.free.cta': 'Start Free Trial',
+    'pricing.free.cta': 'Get Started',
     'pricing.pro.name': 'Pro',
-    'pricing.pro.price': '$29',
+    'pricing.pro.price': '$7.99',
     'pricing.pro.period': 'month',
-    'pricing.pro.description': 'For growing businesses',
-    'pricing.pro.cta': 'Get Started',
+    'pricing.pro.description': 'Best for growing businesses',
+    'pricing.pro.cta': 'Start Pro Trial',
     'pricing.team.name': 'Team',
-    'pricing.team.price': '$99',
+    'pricing.team.price': '$24.99',
     'pricing.team.period': 'month',
-    'pricing.team.description': 'For teams and enterprises',
+    'pricing.team.description': 'For larger teams',
     'pricing.team.cta': 'Contact Sales',
-    
-    // Características de los planes
-    'pricing.features.free.boilerplate': 'Basic boilerplate configuration',
-    'pricing.features.free.auth': 'Authentication templates',
-    'pricing.features.free.projects': '1 project',
+    'pricing.features.free.boilerplate': 'Complete React boilerplate',
+    'pricing.features.free.auth': 'Basic authentication',
+    'pricing.features.free.projects': 'Up to 3 projects',
     'pricing.features.free.support': 'Community support',
-    'pricing.features.free.docs': 'Basic documentation',
-    
-    'pricing.features.pro.boilerplate': 'Complete boilerplate package',
-    'pricing.features.pro.auth': 'Auth + Payments + Database',
+    'pricing.features.free.docs': 'Documentation access',
+    'pricing.features.pro.boilerplate': 'Everything in Starter',
+    'pricing.features.pro.auth': 'Advanced authentication',
     'pricing.features.pro.projects': 'Unlimited projects',
-    'pricing.features.pro.components': 'Premium component library',
+    'pricing.features.pro.components': 'Premium components',
     'pricing.features.pro.support': 'Priority support',
     'pricing.features.pro.deployment': 'Deployment guides',
-    'pricing.features.pro.updates': 'Lifetime updates',
-    
-    'pricing.features.team.everything': 'Everything in the Pro plan',
-    'pricing.features.team.collaboration': 'Team collaboration tools',
-    'pricing.features.team.whitelabel': 'White label options',
+    'pricing.features.pro.updates': 'Regular updates',
+    'pricing.features.team.everything': 'Everything in Pro',
+    'pricing.features.team.collaboration': 'Team collaboration',
+    'pricing.features.team.whitelabel': 'White-label options',
     'pricing.features.team.integrations': 'Custom integrations',
-    'pricing.features.team.onboarding': '1-on-1 onboarding call',
+    'pricing.features.team.onboarding': 'Personal onboarding',
     'pricing.features.team.components': 'Custom components',
-    'pricing.features.team.license': 'Extended license',
-    
-    // Screenshots
-    'screenshots.title': 'See it in Action',
-    'screenshots.subtitle': 'Take a look at some of the key features and components included in the boilerplate.',
-    
-    // Testimonials
-    'testimonials.title': 'What Our Users Say',
-    'testimonials.subtitle': 'Join thousands of satisfied developers who have successfully launched their applications.',
-    'testimonials.roles.indieDev': 'Indie Developer',
-    'testimonials.roles.freelancer': 'Freelancer',
-    'testimonials.roles.soloFounder': 'Solo Founder',
-    'testimonials.roles.fullstack': 'Full-stack Dev',
-    'testimonials.content.alex': 'Shipped my SaaS in 3 days instead of 3 months. The boilerplate is clean and the auth flow just works.',
-    'testimonials.content.sarah': 'Finally, a boilerplate that doesn\'t feel bloated. Got my client\'s MVP live in a weekend.',
-    'testimonials.content.marcus': 'The payment integration saved me weeks. Now I focus on features, not infrastructure.',
-    'testimonials.content.emma': 'Best $49 I\'ve spent. The TypeScript setup alone is worth it. Everything just works.',
-
-    // Contact
-    'contact.title': 'Get in Touch',
-    'contact.subtitle': 'Have questions? We\'d love to hear from you. Send us a message and we\'ll respond as soon as possible.',
-    'contact.getInTouch': 'Get in Touch',
-    'contact.emailUs': 'Email Us',
-    'contact.emailDescription': 'Send us an email and we\'ll get back to you as soon as possible.',
-    'contact.responseTime': 'Response Time',
-    'contact.responseDescription': 'We typically respond to all inquiries within 24 hours during business days.',
-    'contact.form.name': 'Name',
-    'contact.form.namePlaceholder': 'Enter your name',
-    'contact.form.email': 'Email',
-    'contact.form.emailPlaceholder': 'Enter your email',
-    'contact.form.subject': 'Subject',
-    'contact.form.subjectPlaceholder': 'Enter the subject',
-    'contact.form.message': 'Message',
-    'contact.form.messagePlaceholder': 'Enter your message',
-    'contact.form.send': 'Send Message',
+    'pricing.features.team.license': 'Commercial license',
 
     // Footer
-    'footer.description': 'The fastest way to build and ship your SaaS MVP. Focus on your unique features, we\'ll handle the boilerplate.',
-    'footer.product.title': 'Product',
-    'footer.product.features': 'Features',
-    'footer.product.pricing': 'Pricing',
-    'footer.product.documentation': 'Documentation',
-    'footer.product.changelog': 'Changelog',
-    'footer.product.roadmap': 'Roadmap',
-    'footer.support.title': 'Support',
-    'footer.support.contact': 'Contact',
-    'footer.support.helpCenter': 'Help Center',
-    'footer.support.discord': 'Discord Community',
-    'footer.support.status': 'Status Page',
-    'footer.copyright': '© 2024 LaunchFast. All rights reserved.',
-    'footer.privacy': 'Privacy Policy',
-    'footer.terms': 'Terms of Service',
+    'footer.description': 'Launch your SaaS faster with our complete React boilerplate.',
+    'footer.product': 'Product',
+    'footer.features': 'Features',
+    'footer.pricing': 'Pricing',
+    'footer.documentation': 'Documentation',
+    'footer.company': 'Company',
+    'footer.about': 'About',
+    'footer.contact': 'Contact',
+    'footer.privacy': 'Privacy',
+    'footer.developers': 'Developers',
+    'footer.guides': 'Guides',
+    'footer.support': 'Support',
+    'footer.rights': 'All rights reserved.',
+
+    // CTA
+    'cta.title': 'Ready to Launch Your SaaS?',
+    'cta.subtitle': 'Join thousands of developers who have accelerated their projects with our boilerplate.',
+    'cta.primary': 'Start Building Today',
+    'cta.secondary': 'View Documentation',
+
+    // Dashboard
+    'dashboard.welcome': 'Welcome to your dashboard',
+    'dashboard.subscription': 'Subscription Status',
+    'dashboard.analytics': 'Analytics',
+    'dashboard.profile': 'Profile Settings',
+
+    // Auth
+    'auth.signin': 'Sign In',
+    'auth.signup': 'Sign Up',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.confirmPassword': 'Confirm Password',
+    'auth.forgotPassword': 'Forgot Password?',
+    'auth.noAccount': "Don't have an account?",
+    'auth.hasAccount': 'Already have an account?',
+    'auth.signInHere': 'Sign in here',
+    'auth.signUpHere': 'Sign up here',
+
+    // Profile Settings
+    'profile.title': 'Profile Settings',
+    'profile.subtitle': 'Manage your account information and preferences',
+    'profile.firstName': 'First Name',
+    'profile.lastName': 'Last Name',
+    'profile.email': 'Email Address',
+    'profile.emailNotifications': 'Email Notifications',
+    'profile.emailNotificationsDesc': 'Receive notifications about account activity',
+    'profile.updating': 'Updating...',
+    'profile.updateProfile': 'Update Profile',
+    'profile.success': 'Profile updated successfully',
+    'profile.error': 'Failed to update profile',
+    'profile.firstNamePlaceholder': 'Enter your first name',
+    'profile.lastNamePlaceholder': 'Enter your last name',
+
+    // Analytics
+    'analytics.title': 'Analytics Overview',
+    'analytics.description': 'Your account usage and activity summary',
+    'analytics.totalLogins': 'Total Logins',
+    'analytics.lastLogin': 'Last Login',
+    'analytics.totalPayments': 'Total Payments',
+    'analytics.lastPayment': 'Last Payment',
+    'analytics.currentSubscription': 'Current Subscription',
+    'analytics.notAvailable': 'N/A',
 
     // Subscription
-    'subscription.currentPlan': 'Current Plan',
-    'subscription.manageSubscription': 'Manage your subscription and billing information.',
     'subscription.noActivePlan': 'No Active Plan',
     'subscription.choosePlan': 'Choose a plan to get started with premium features.',
     'subscription.viewPlans': 'View Plans',
-    'subscription.free': 'Free',
-    'subscription.notAvailable': 'N/A',
+    'subscription.currentPlan': 'Current Plan',
+    'subscription.manageSubscription': 'Manage your subscription and billing information.',
     'subscription.active': 'Active',
     'subscription.trialEnds': 'Trial ends',
     'subscription.refresh': 'Refresh',
     'subscription.changePlan': 'Change Plan',
+    'subscription.free': 'Free',
+    'subscription.notAvailable': 'N/A',
   },
   es: {
     // Header
@@ -198,192 +163,162 @@ const translations = {
     'header.startFree': 'Empezar Gratis',
     'header.dashboard': 'Panel',
     'header.signOut': 'Cerrar Sesión',
-    
+
     // Hero
-    'hero.title': 'Lanza tu SaaS',
-    'hero.titleHighlight': 'Rápido',
-    'hero.titleEnd': ' y Escala',
-    'hero.subtitle': 'El conjunto completo de herramientas para construir, desplegar y escalar tu aplicación SaaS con tecnologías modernas.',
-    'hero.ctaPrimary': 'Empezar Gratis',
-    'hero.ctaSecondary': 'Ver Demo',
-    'hero.goToDashboard': 'Ir al Panel',
-    'hero.noCredit': 'No se requiere tarjeta de crédito • Prueba gratuita de 14 días',
-    'hero.stat1': '50k+',
-    'hero.stat1Label': 'Usuarios Activos',
-    'hero.stat2': '99.95%',
-    'hero.stat2Label': 'Tiempo Activo',
-    'hero.stat3': '15min',
-    'hero.stat3Label': 'Tiempo de Respuesta',
-    
+    'hero.title': 'Lanza tu SaaS en Días, No en Meses',
+    'hero.subtitle': 'Plantilla completa de React con autenticación, pagos y despliegue listo. Enfócate en construir características, no en infraestructura.',
+    'hero.cta': 'Empezar a Construir',
+    'hero.secondary': 'Ver Demo en Vivo',
+
     // Features
     'features.title': 'Todo lo que Necesitas para Lanzar',
-    'features.subtitle': 'Construido con las últimas tecnologías y mejores prácticas para aplicaciones web modernas.',
-    'features.auth.title': 'Autenticación y Autorización',
-    'features.auth.description': 'Gestión completa de usuarios con autenticación segura, control de acceso basado en roles y opciones de login social.',
-    'features.payment.title': 'Procesamiento de Pagos',
-    'features.payment.description': 'Pagos integrados con Stripe con gestión de suscripciones, facturación y cobro automatizado.',
-    'features.database.title': 'Base de Datos y Almacenamiento',
-    'features.database.description': 'Base de datos PostgreSQL con integración Supabase, actualizaciones en tiempo real y capacidades de almacenamiento de archivos.',
-    'features.tech.title': 'Stack Tecnológico Moderno',
-    'features.tech.description': 'Construido con React, TypeScript, Tailwind CSS y otras tecnologías de vanguardia.',
-    'features.deploy.title': 'Despliegue Fácil',
-    'features.deploy.description': 'Despliegue con un clic a Vercel, Netlify o tu plataforma de hosting preferida.',
-    'features.dx.title': 'Experiencia del Desarrollador',
-    'features.dx.description': 'Recarga en caliente, soporte TypeScript, ESLint, Prettier y documentación completa.',
-    
-    // Auth
-    'auth.signUp': 'Registrarse',
-    'auth.signIn': 'Iniciar Sesión',
-    'auth.signOut': 'Cerrar Sesión',
-    'auth.email': 'Email',
-    'auth.password': 'Contraseña',
-    'auth.emailPlaceholder': 'Ingresa tu email',
-    'auth.passwordPlaceholder': 'Ingresa tu contraseña',
-    'auth.haveAccount': '¿Ya tienes una cuenta?',
-    'auth.noAccount': '¿No tienes una cuenta?',
-    'auth.backToHome': 'Volver al inicio',
-    
-    // Dashboard
-    'dashboard.welcome': '¡Bienvenido a tu panel!',
-    'dashboard.welcomeMessage': 'Has iniciado sesión exitosamente. Aquí puedes gestionar tu cuenta y acceder a todas las funciones.',
-    'dashboard.email': 'Email',
-    'dashboard.userId': 'ID de Usuario',
-    'dashboard.profile': 'Configuración de Perfil',
-    'dashboard.profileDesc': 'Gestiona la configuración de tu cuenta y preferencias.',
-    'dashboard.viewProfile': 'Ver Perfil',
-    'dashboard.analytics': 'Analíticas',
-    'dashboard.analyticsDesc': 'Ve tus estadísticas de uso e insights.',
-    'dashboard.viewAnalytics': 'Ver Analíticas',
-    'dashboard.support': 'Soporte',
-    'dashboard.supportDesc': 'Obtén ayuda y contacta a nuestro equipo de soporte.',
-    'dashboard.contactSupport': 'Contactar Soporte',
-    
-    // CTA
-    'cta.title': '¿Listo para Lanzar tu SaaS?',
-    'cta.subtitle': 'Únete a miles de desarrolladores que ya han lanzado aplicaciones exitosas.',
-    'cta.button': 'Empezar a Construir Hoy',
-    'cta.benefits': '✓ Sin costos de configuración ✓ Cancela en cualquier momento ✓ Prueba gratuita de 14 días',
-    
+    'features.subtitle': 'Construido con tecnologías modernas y mejores prácticas',
+    'features.auth.title': 'Autenticación Lista',
+    'features.auth.description': 'Autenticación completa de usuarios con Supabase Auth incluyendo logins sociales',
+    'features.payments.title': 'Integración de Pagos',
+    'features.payments.description': 'Integración con Stripe para suscripciones y pagos únicos',
+    'features.database.title': 'Base de Datos y API',
+    'features.database.description': 'Base de datos PostgreSQL con suscripciones en tiempo real y APIs auto-generadas',
+    'features.ui.title': 'Componentes de UI Modernos',
+    'features.ui.description': 'Componentes hermosos y responsivos construidos con Tailwind CSS y shadcn/ui',
+    'features.deployment.title': 'Despliega en Cualquier Lugar',
+    'features.deployment.description': 'Despliega en Vercel, Netlify o cualquier plataforma de hosting estático',
+    'features.typescript.title': 'Listo para TypeScript',
+    'features.typescript.description': 'Código base completamente tipado para una mejor experiencia de desarrollo',
+
     // Pricing
     'pricing.title': 'Precios Simples y Transparentes',
-    'pricing.subtitle': 'Elige el plan que mejor se adapte a tus necesidades',
+    'pricing.subtitle': 'Elige el plan que se adapte a tus necesidades',
     'pricing.popular': 'Más Popular',
-    'pricing.free.name': 'Gratis',
-    'pricing.free.price': '$0',
-    'pricing.free.period': 'mes',
-    'pricing.free.description': 'Perfecto para comenzar',
-    'pricing.free.cta': 'Prueba Gratuita',
+    'pricing.free.name': 'Iniciador',
+    'pricing.free.price': 'Gratis',
+    'pricing.free.period': 'para siempre',
+    'pricing.free.description': 'Perfecto para empezar',
+    'pricing.free.cta': 'Comenzar',
     'pricing.pro.name': 'Pro',
-    'pricing.pro.price': '$29',
+    'pricing.pro.price': '$7.99',
     'pricing.pro.period': 'mes',
-    'pricing.pro.description': 'Para negocios en crecimiento',
-    'pricing.pro.cta': 'Comenzar',
+    'pricing.pro.description': 'Mejor para negocios en crecimiento',
+    'pricing.pro.cta': 'Iniciar Prueba Pro',
     'pricing.team.name': 'Equipo',
-    'pricing.team.price': '$99',
+    'pricing.team.price': '$24.99',
     'pricing.team.period': 'mes',
-    'pricing.team.description': 'Para equipos y empresas',
+    'pricing.team.description': 'Para equipos más grandes',
     'pricing.team.cta': 'Contactar Ventas',
-    
-    // Características de los planes
-    'pricing.features.free.boilerplate': 'Configuración básica del boilerplate',
-    'pricing.features.free.auth': 'Plantillas de autenticación',
-    'pricing.features.free.projects': '1 proyecto',
-    'pricing.features.free.support': 'Soporte comunitario',
-    'pricing.features.free.docs': 'Documentación básica',
-    
-    'pricing.features.pro.boilerplate': 'Paquete completo de boilerplate',
-    'pricing.features.pro.auth': 'Auth + Pagos + Base de datos',
+    'pricing.features.free.boilerplate': 'Plantilla completa de React',
+    'pricing.features.free.auth': 'Autenticación básica',
+    'pricing.features.free.projects': 'Hasta 3 proyectos',
+    'pricing.features.free.support': 'Soporte de la comunidad',
+    'pricing.features.free.docs': 'Acceso a documentación',
+    'pricing.features.pro.boilerplate': 'Todo lo del Iniciador',
+    'pricing.features.pro.auth': 'Autenticación avanzada',
     'pricing.features.pro.projects': 'Proyectos ilimitados',
-    'pricing.features.pro.components': 'Biblioteca de componentes premium',
+    'pricing.features.pro.components': 'Componentes premium',
     'pricing.features.pro.support': 'Soporte prioritario',
     'pricing.features.pro.deployment': 'Guías de despliegue',
-    'pricing.features.pro.updates': 'Actualizaciones de por vida',
-    
-    'pricing.features.team.everything': 'Todo lo del plan Pro',
-    'pricing.features.team.collaboration': 'Herramientas de colaboración en equipo',
+    'pricing.features.pro.updates': 'Actualizaciones regulares',
+    'pricing.features.team.everything': 'Todo lo del Pro',
+    'pricing.features.team.collaboration': 'Colaboración en equipo',
     'pricing.features.team.whitelabel': 'Opciones de marca blanca',
     'pricing.features.team.integrations': 'Integraciones personalizadas',
-    'pricing.features.team.onboarding': 'Llamada de incorporación 1 a 1',
+    'pricing.features.team.onboarding': 'Incorporación personal',
     'pricing.features.team.components': 'Componentes personalizados',
-    'pricing.features.team.license': 'Licencia extendida',
-    
-    // Screenshots
-    'screenshots.title': 'Véalo en Acción',
-    'screenshots.subtitle': 'Eche un vistazo a algunas de las características y componentes clave incluidos en el boilerplate.',
-    
-    // Testimonials
-    'testimonials.title': 'Lo que Dicen Nuestros Usuarios',
-    'testimonials.subtitle': 'Únete a miles de desarrolladores satisfechos que han lanzado exitosamente sus aplicaciones.',
-    'testimonials.roles.indieDev': 'Desarrollador Independiente',
-    'testimonials.roles.freelancer': 'Freelancer',
-    'testimonials.roles.soloFounder': 'Fundador Independiente',
-    'testimonials.roles.fullstack': 'Desarrollador Full-stack',
-    'testimonials.content.alex': 'Lancé mi SaaS en 3 días en lugar de 3 meses. El boilerplate es limpio y el flujo de autenticación funciona perfectamente.',
-    'testimonials.content.sarah': 'Finalmente, un boilerplate que no se siente sobrecargado. Puse en marcha el MVP de mi cliente en un fin de semana.',
-    'testimonials.content.marcus': 'La integración de pagos me ahorró semanas. Ahora me enfoco en las características, no en la infraestructura.',
-    'testimonials.content.emma': 'Los mejores $49 que he gastado. Solo la configuración de TypeScript ya lo vale. Todo funciona perfectamente.',
-
-    // Contact
-    'contact.title': 'Contáctanos',
-    'contact.subtitle': '¿Tienes preguntas? Nos encantaría escucharte. Envíanos un mensaje y te responderemos lo antes posible.',
-    'contact.getInTouch': 'Ponte en Contacto',
-    'contact.emailUs': 'Escríbenos',
-    'contact.emailDescription': 'Envíanos un correo electrónico y te responderemos lo antes posible.',
-    'contact.responseTime': 'Tiempo de Respuesta',
-    'contact.responseDescription': 'Normalmente respondemos a todas las consultas dentro de las 24 horas en días laborables.',
-    'contact.form.name': 'Nombre',
-    'contact.form.namePlaceholder': 'Ingresa tu nombre',
-    'contact.form.email': 'Correo Electrónico',
-    'contact.form.emailPlaceholder': 'Ingresa tu correo electrónico',
-    'contact.form.subject': 'Asunto',
-    'contact.form.subjectPlaceholder': 'Ingresa el asunto',
-    'contact.form.message': 'Mensaje',
-    'contact.form.messagePlaceholder': 'Ingresa tu mensaje',
-    'contact.form.send': 'Enviar Mensaje',
+    'pricing.features.team.license': 'Licencia comercial',
 
     // Footer
-    'footer.description': 'La forma más rápida de construir y lanzar tu MVP SaaS. Enfócate en tus características únicas, nosotros manejamos la estructura básica.',
-    'footer.product.title': 'Producto',
-    'footer.product.features': 'Características',
-    'footer.product.pricing': 'Precios',
-    'footer.product.documentation': 'Documentación',
-    'footer.product.changelog': 'Registro de cambios',
-    'footer.product.roadmap': 'Hoja de ruta',
-    'footer.support.title': 'Soporte',
-    'footer.support.contact': 'Contacto',
-    'footer.support.helpCenter': 'Centro de ayuda',
-    'footer.support.discord': 'Comunidad Discord',
-    'footer.support.status': 'Estado del servicio',
-    'footer.copyright': '© 2024 LaunchFast. Todos los derechos reservados.',
-    'footer.privacy': 'Política de privacidad',
-    'footer.terms': 'Términos de servicio',
+    'footer.description': 'Lanza tu SaaS más rápido con nuestra plantilla completa de React.',
+    'footer.product': 'Producto',
+    'footer.features': 'Características',
+    'footer.pricing': 'Precios',
+    'footer.documentation': 'Documentación',
+    'footer.company': 'Empresa',
+    'footer.about': 'Acerca de',
+    'footer.contact': 'Contacto',
+    'footer.privacy': 'Privacidad',
+    'footer.developers': 'Desarrolladores',
+    'footer.guides': 'Guías',
+    'footer.support': 'Soporte',
+    'footer.rights': 'Todos los derechos reservados.',
+
+    // CTA
+    'cta.title': '¿Listo para Lanzar tu SaaS?',
+    'cta.subtitle': 'Únete a miles de desarrolladores que han acelerado sus proyectos con nuestra plantilla.',
+    'cta.primary': 'Empezar a Construir Hoy',
+    'cta.secondary': 'Ver Documentación',
+
+    // Dashboard
+    'dashboard.welcome': 'Bienvenido a tu panel',
+    'dashboard.subscription': 'Estado de Suscripción',
+    'dashboard.analytics': 'Analíticas',
+    'dashboard.profile': 'Configuración de Perfil',
+
+    // Auth
+    'auth.signin': 'Iniciar Sesión',
+    'auth.signup': 'Registrarse',
+    'auth.email': 'Correo Electrónico',
+    'auth.password': 'Contraseña',
+    'auth.confirmPassword': 'Confirmar Contraseña',
+    'auth.forgotPassword': '¿Olvidaste tu contraseña?',
+    'auth.noAccount': '¿No tienes una cuenta?',
+    'auth.hasAccount': '¿Ya tienes una cuenta?',
+    'auth.signInHere': 'Inicia sesión aquí',
+    'auth.signUpHere': 'Regístrate aquí',
+
+    // Profile Settings
+    'profile.title': 'Configuración de Perfil',
+    'profile.subtitle': 'Gestiona la información de tu cuenta y preferencias',
+    'profile.firstName': 'Nombre',
+    'profile.lastName': 'Apellido',
+    'profile.email': 'Dirección de Correo',
+    'profile.emailNotifications': 'Notificaciones por Correo',
+    'profile.emailNotificationsDesc': 'Recibir notificaciones sobre actividad de la cuenta',
+    'profile.updating': 'Actualizando...',
+    'profile.updateProfile': 'Actualizar Perfil',
+    'profile.success': 'Perfil actualizado exitosamente',
+    'profile.error': 'Error al actualizar el perfil',
+    'profile.firstNamePlaceholder': 'Ingresa tu nombre',
+    'profile.lastNamePlaceholder': 'Ingresa tu apellido',
+
+    // Analytics
+    'analytics.title': 'Resumen de Analíticas',
+    'analytics.description': 'Resumen de uso y actividad de tu cuenta',
+    'analytics.totalLogins': 'Total de Inicios de Sesión',
+    'analytics.lastLogin': 'Último Inicio de Sesión',
+    'analytics.totalPayments': 'Total de Pagos',
+    'analytics.lastPayment': 'Último Pago',
+    'analytics.currentSubscription': 'Suscripción Actual',
+    'analytics.notAvailable': 'N/D',
 
     // Subscription
+    'subscription.noActivePlan': 'Sin Plan Activo',
+    'subscription.choosePlan': 'Elige un plan para comenzar con las características premium.',
+    'subscription.viewPlans': 'Ver Planes',
     'subscription.currentPlan': 'Plan Actual',
     'subscription.manageSubscription': 'Gestiona tu suscripción e información de facturación.',
-    'subscription.noActivePlan': 'Sin Plan Activo',
-    'subscription.choosePlan': 'Elige un plan para comenzar con funciones premium.',
-    'subscription.viewPlans': 'Ver Planes',
-    'subscription.free': 'Gratis',
-    'subscription.notAvailable': 'N/D',
     'subscription.active': 'Activo',
     'subscription.trialEnds': 'Prueba termina',
     'subscription.refresh': 'Actualizar',
     'subscription.changePlan': 'Cambiar Plan',
+    'subscription.free': 'Gratis',
+    'subscription.notAvailable': 'N/D',
   }
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguage] = useState<'en' | 'es'>('en');
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'en' ? 'es' : 'en');
+  };
 
   const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations['en']] || key;
+    return translations[language][key] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -391,7 +326,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
