@@ -27,7 +27,7 @@ export const useCheckout = () => {
       console.error('Plan selection error:', error);
       toast({
         title: "Error",
-        description: "Failed to process plan selection",
+        description: error instanceof Error ? error.message : "Failed to process plan selection",
         variant: "destructive",
       });
     }
@@ -51,7 +51,10 @@ export const useCheckout = () => {
         onConflict: 'user_id'
       });
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error activating free plan:', error);
+      throw new Error('Failed to activate free plan');
+    }
 
     toast({
       title: "Plan activated",
@@ -62,6 +65,15 @@ export const useCheckout = () => {
   };
 
   const redirectToStripeCheckout = async (plan: any) => {
+    if (!plan.priceId) {
+      throw new Error('No price ID configured for this plan');
+    }
+
+    toast({
+      title: "Redirecting to checkout",
+      description: "Please wait while we prepare your checkout session...",
+    });
+
     const { data, error } = await supabase.functions.invoke('create-checkout-session', {
       body: {
         priceId: plan.priceId,
@@ -72,16 +84,27 @@ export const useCheckout = () => {
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      console.error('Checkout session error:', error);
+      throw new Error(error.message || 'Failed to create checkout session');
+    }
 
     if (data?.sessionId) {
       const stripe = await import('@stripe/stripe-js').then(m => m.loadStripe(
         'pk_test_51QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV'
       ));
       
-      await stripe?.redirectToCheckout({ sessionId: data.sessionId });
+      if (!stripe) {
+        throw new Error('Failed to load Stripe');
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+      
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
     } else {
-      throw new Error('No session ID returned');
+      throw new Error('No session ID returned from checkout creation');
     }
   };
 

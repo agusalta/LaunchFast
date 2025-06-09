@@ -16,9 +16,31 @@ serve(async (req) => {
   try {
     const { priceId, userId, planName, successUrl, cancelUrl } = await req.json();
 
+    if (!priceId) {
+      throw new Error('Price ID is required');
+    }
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2023-10-16",
     });
+
+    // Create Supabase client for user verification
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+    );
+
+    // Verify user authentication
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
+      if (userError || !userData.user) {
+        throw new Error("User not authenticated");
+      }
+    }
+
+    console.log('Creating checkout session for price:', priceId);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -29,14 +51,16 @@ serve(async (req) => {
         },
       ],
       mode: 'subscription',
-      success_url: successUrl,
-      cancel_url: cancelUrl,
+      success_url: successUrl || `${req.headers.get("origin")}/dashboard?success=true`,
+      cancel_url: cancelUrl || `${req.headers.get("origin")}/#pricing?canceled=true`,
       client_reference_id: userId,
       metadata: {
         userId,
-        planName,
+        planName: planName || 'Unknown Plan',
       },
     });
+
+    console.log('Checkout session created successfully:', session.id);
 
     return new Response(JSON.stringify({ sessionId: session.id }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

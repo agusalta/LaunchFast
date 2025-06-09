@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -53,7 +54,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.pro.cta'),
       popular: true,
-      priceId: import.meta.env.VITE_STRIPE_PRO_PRICE_ID || 'price_1234567890',
+      priceId: 'price_1QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV', // Pro plan price ID
       isFree: false
     },
     {
@@ -72,7 +73,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.team.cta'),
       popular: false,
-      priceId: import.meta.env.VITE_STRIPE_TEAM_PRICE_ID || 'price_0987654321',
+      priceId: 'price_1QrXJRAYxgNJmWTCteam123456789', // Team plan price ID
       isFree: false
     }
   ];
@@ -92,10 +93,10 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <div 
               key={index}
-              className={`relative p-8 bg-white rounded-xl border-2 ${
+              className={`relative p-8 bg-white rounded-xl border-2 transition-transform hover:scale-105 ${
                 plan.popular 
                   ? 'border-green-500 shadow-lg scale-105' 
-                  : 'border-gray-200'
+                  : 'border-gray-200 hover:border-green-300'
               }`}
             >
               {plan.popular && (
@@ -122,16 +123,22 @@ const Pricing = () => {
                 ))}
               </ul>
               <Button 
-                className={`w-full ${
+                className={`w-full transition-colors ${
                   plan.popular 
                     ? 'bg-green-600 hover:bg-green-700' 
                     : 'bg-gray-900 hover:bg-gray-800'
                 }`}
                 size="lg"
                 onClick={() => handlePlanClick(plan)}
+                disabled={!user && !plan.isFree}
               >
-                {plan.cta}
+                {!user && !plan.isFree ? 'Sign in to subscribe' : plan.cta}
               </Button>
+              {!user && (
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Sign in required for paid plans
+                </p>
+              )}
             </div>
           ))}
         </div>

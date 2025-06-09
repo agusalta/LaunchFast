@@ -22,13 +22,22 @@ const Dashboard = () => {
   useEffect(() => {
     // Check for success parameter in URL
     const urlParams = new URLSearchParams(window.location.search);
+    
     if (urlParams.get('success') === 'true') {
       toast({
         title: "Payment successful!",
-        description: "Your subscription has been activated.",
+        description: "Your subscription has been activated. Welcome aboard!",
       });
       // Refresh subscription data
       refreshSubscription();
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (urlParams.get('canceled') === 'true') {
+      toast({
+        title: "Payment canceled",
+        description: "Your payment was canceled. You can try again anytime.",
+        variant: "destructive",
+      });
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
@@ -106,7 +115,7 @@ const Dashboard = () => {
             </TabsContent>
           </Tabs>
 
-          {/* Quick Actions (kept for compatibility) */}
+          {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -117,6 +126,18 @@ const Dashboard = () => {
               </p>
               <Button variant="outline" className="w-full">
                 {t('dashboard.contactSupport') || 'Contact Support'}
+              </Button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Upgrade Plan
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">
+                Explore our pricing plans and upgrade your subscription.
+              </p>
+              <Button asChild className="w-full">
+                <Link to="/#pricing">View Plans</Link>
               </Button>
             </div>
           </div>
