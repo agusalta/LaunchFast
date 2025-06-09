@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -54,7 +53,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.pro.cta'),
       popular: true,
-      priceId: 'price_1QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV', // Pro plan price ID
+      priceId: 'price_1RXtEYIeCmoKndoZ4ycWThsi', // Real Pro plan price ID
       isFree: false
     },
     {
@@ -73,7 +72,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.team.cta'),
       popular: false,
-      priceId: 'price_1QrXJRAYxgNJmWTCteam123456789', // Team plan price ID
+      priceId: 'price_1RXtEzIeCmoKndoZCIn8A6UW', // Real Team plan price ID
       isFree: false
     }
   ];
