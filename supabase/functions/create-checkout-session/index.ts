@@ -76,6 +76,18 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
     
+    // Check if customer already exists
+    const customers = await stripe.customers.list({
+      limit: 1,
+      email: userData.user?.email
+    });
+
+    let customerId;
+    if (customers.data.length > 0) {
+      customerId = customers.data[0].id;
+      console.log('Existing customer found:', customerId);
+    }
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -92,8 +104,8 @@ serve(async (req) => {
         userId,
         planName: planName || 'Unknown Plan',
       },
-      // Add customer creation if needed
-      customer_creation: 'always',
+      // Only set customer if one exists, otherwise let Stripe create one
+      ...(customerId ? { customer: customerId } : { customer_email: userData.user?.email }),
       // Set billing address collection
       billing_address_collection: 'required',
       // Set automatic tax calculation
