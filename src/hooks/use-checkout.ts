@@ -2,6 +2,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 
 export const useCheckout = () => {
   const { user } = useAuth();
@@ -95,7 +96,22 @@ export const useCheckout = () => {
       if (error) {
         console.error('Checkout session error:', error);
         
-        // Handle specific error types
+        // Handle FunctionsHttpError to get real error messages
+        if (error instanceof FunctionsHttpError) {
+          try {
+            const errorMessage = await error.context.json();
+            console.log('Function returned an error:', errorMessage);
+            
+            // Use the actual error message from the function
+            const actualError = errorMessage.error || errorMessage.message || 'Unknown error occurred';
+            throw new Error(actualError);
+          } catch (parseError) {
+            console.error('Failed to parse error response:', parseError);
+            throw new Error('Failed to create checkout session. Please try again.');
+          }
+        }
+        
+        // Handle other types of errors
         if (error.message?.includes('No such price')) {
           throw new Error('This pricing plan is temporarily unavailable. Please contact support.');
         } else if (error.message?.includes('authentication')) {
