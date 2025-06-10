@@ -13,7 +13,7 @@ const supabase = createClient(
 
 serve(async (req) => {
   const signature = req.headers.get("Stripe-Signature");
-  
+
   if (!signature) {
     return new Response("No signature", { status: 400 });
   }
@@ -29,62 +29,106 @@ serve(async (req) => {
     console.log(`Webhook received: ${event.type}`);
 
     switch (event.type) {
-      case 'checkout.session.completed': {
+      case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        console.log('Checkout session completed:', session.id);
+        console.log("Checkout session completed:", session.id);
 
-        if (session.mode === 'subscription' && session.subscription) {
-          const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+        if (session.mode === "subscription" && session.subscription) {
+          const subscription = await stripe.subscriptions.retrieve(
+            session.subscription as string
+          );
           const userId = session.client_reference_id;
-          const planName = session.metadata?.planName || 'Unknown Plan';
+          const planName = session.metadata?.planName || "Unknown Plan";
 
           if (userId) {
-            const { error } = await supabase
-              .from('subscriptions')
-              .upsert({
+            const { error } = await supabase.from("subscriptions").upsert(
+              {
                 user_id: userId,
                 plan_name: planName,
-                status: 'active',
+                status: "active",
                 price: subscription.items.data[0]?.price.unit_amount || 0,
-                trial_ends_at: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
+                trial_ends_at: subscription.trial_end
+                  ? new Date(subscription.trial_end * 1000).toISOString()
+                  : null,
                 updated_at: new Date().toISOString(),
-              }, {
-                onConflict: 'user_id'
-              });
+              },
+              {
+                onConflict: "user_id",
+              }
+            );
 
             if (error) {
-              console.error('Error updating subscription:', error);
+              console.error("Error updating subscription:", error);
             } else {
-              console.log('Subscription updated successfully for user:', userId);
+              console.log(
+                "Subscription updated successfully for user:",
+                userId
+              );
             }
           }
         }
         break;
       }
 
-      case 'customer.subscription.updated':
-      case 'customer.subscription.deleted': {
+      case "customer.subscription.created": {
         const subscription = event.data.object as Stripe.Subscription;
         const customerId = subscription.customer as string;
-        
+
         const customer = await stripe.customers.retrieve(customerId);
         if (customer.deleted) break;
 
         const email = (customer as Stripe.Customer).email;
         if (!email) break;
 
-        const status = subscription.status === 'active' ? 'active' : 'inactive';
-        
+        const { error } = await supabase.from("subscriptions").upsert(
+          {
+            user_id: subscription.metadata?.userId,
+            plan_name:
+              subscription.items.data[0]?.price.nickname || "Unknown Plan",
+            status: "active",
+            price: subscription.items.data[0]?.price.unit_amount || 0,
+            trial_ends_at: subscription.trial_end
+              ? new Date(subscription.trial_end * 1000).toISOString()
+              : null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          {
+            onConflict: "user_id",
+          }
+        );
+
+        if (error) {
+          console.error("Error creating subscription:", error);
+        } else {
+          console.log("Subscription created successfully");
+        }
+        break;
+      }
+
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId = subscription.customer as string;
+
+        const customer = await stripe.customers.retrieve(customerId);
+        if (customer.deleted) break;
+
+        const email = (customer as Stripe.Customer).email;
+        if (!email) break;
+
+        const status = subscription.status === "active" ? "active" : "inactive";
+
         const { error } = await supabase
-          .from('subscriptions')
+          .from("subscriptions")
           .update({
             status,
             updated_at: new Date().toISOString(),
           })
-          .eq('user_id', subscription.metadata?.userId);
+          .eq("user_id", subscription.metadata?.userId);
 
         if (error) {
-          console.error('Error updating subscription status:', error);
+          console.error("Error updating subscription status:", error);
         } else {
           console.log(`Subscription status updated to ${status}`);
         }
@@ -100,7 +144,7 @@ serve(async (req) => {
       status: 200,
     });
   } catch (error) {
-    console.error('Webhook error:', error);
+    console.error("Webhook error:", error);
     return new Response(`Webhook error: ${error.message}`, { status: 400 });
   }
 });

@@ -243,13 +243,64 @@ npm run preview
 
 ### Docker
 
-```bash
-# Build the image
-docker build -t launch-spark-mvp .
+The project includes Docker configuration for production deployment. The setup uses a multi-stage build process to create an optimized production image.
 
-# Run the container
-docker run -p 3000:3000 launch-spark-mvp
+#### Prerequisites
+
+- Docker installed on your system
+- Docker Compose (optional, for local development)
+
+#### Building and Running
+
+1. Build the Docker image:
+
+```bash
+docker build -t launch-spark-mvp .
 ```
+
+2. Run the container:
+
+```bash
+docker run -p 80:80 launch-spark-mvp
+```
+
+The application will be available at `http://localhost`.
+
+#### Docker Configuration
+
+The project includes the following Docker-related files:
+
+- `Dockerfile`: Multi-stage build configuration
+
+  - Build stage: Node.js environment for building the application
+  - Production stage: Nginx server for serving the built application
+
+- `nginx.conf`: Nginx configuration for:
+
+  - SPA routing
+  - Gzip compression
+  - Security headers
+  - Static asset caching
+  - Error page handling
+
+- `.dockerignore`: Excludes unnecessary files from the build to:
+  - Reduce image size
+  - Improve security
+  - Speed up build process
+
+#### Environment Variables
+
+When running in Docker, you can pass environment variables using the `-e` flag:
+
+```bash
+docker run -p 80:80 \
+  -e VITE_SUPABASE_URL=your-supabase-url \
+  -e VITE_SUPABASE_ANON_KEY=your-anon-key \
+  -e VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-key \
+  launch-spark-mvp
+```
+
+For production deployment, consider using Docker Compose or a container orchestration platform like Kubernetes for better environment variable management.
 
 ## 🤝 Contributing
 
