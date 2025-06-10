@@ -1,24 +1,34 @@
 
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCheckout } from "@/hooks/use-checkout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import AnimatedSection from './AnimatedSection';
+import { useState } from 'react';
 
 const Pricing = () => {
   const { t } = useLanguage();
   const { handlePlanSelection } = useCheckout();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  const handlePlanClick = (plan: any) => {
+  const handlePlanClick = async (plan: any) => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    handlePlanSelection(plan);
+    
+    setLoadingPlan(plan.name);
+    try {
+      await handlePlanSelection(plan);
+    } catch (error) {
+      console.error('Plan selection failed:', error);
+    } finally {
+      setLoadingPlan(null);
+    }
   };
 
   const plans = [
@@ -55,7 +65,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.pro.cta'),
       popular: true,
-      priceId: 'price_1RXtEYIeCmoKndoZ4ycWThsi', // Real Pro plan price ID
+      priceId: 'price_1RXtEYIeCmoKndoZ4ycWThsi',
       isFree: false
     },
     {
@@ -74,7 +84,7 @@ const Pricing = () => {
       ],
       cta: t('pricing.team.cta'),
       popular: false,
-      priceId: 'price_1RXtEzIeCmoKndoZCIn8A6UW', // Real Team plan price ID
+      priceId: 'price_1RXtEzIeCmoKndoZCIn8A6UW',
       isFree: false
     }
   ];
@@ -146,9 +156,18 @@ const Pricing = () => {
                   }`}
                   size="lg"
                   onClick={() => handlePlanClick(plan)}
-                  disabled={!user && !plan.isFree}
+                  disabled={(!user && !plan.isFree) || loadingPlan === plan.name}
                 >
-                  {!user && !plan.isFree ? 'Sign in to subscribe' : plan.cta}
+                  {loadingPlan === plan.name ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : !user && !plan.isFree ? (
+                    'Sign in to subscribe'
+                  ) : (
+                    plan.cta
+                  )}
                 </Button>
 
                 {!user && (

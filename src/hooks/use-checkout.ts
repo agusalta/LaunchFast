@@ -26,8 +26,8 @@ export const useCheckout = () => {
     } catch (error) {
       console.error('Plan selection error:', error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to process plan selection",
+        title: "Payment Error",
+        description: error instanceof Error ? error.message : "Failed to process plan selection. Please try again.",
         variant: "destructive",
       });
     }
@@ -69,42 +69,86 @@ export const useCheckout = () => {
       throw new Error('No price ID configured for this plan');
     }
 
+    // Validate price ID format
+    if (!plan.priceId.startsWith('price_')) {
+      throw new Error('Invalid price ID format');
+    }
+
     toast({
       title: "Redirecting to checkout",
       description: "Please wait while we prepare your checkout session...",
     });
 
-    const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-      body: {
-        priceId: plan.priceId,
-        userId: user!.id,
-        planName: plan.name,
-        successUrl: `${window.location.origin}/dashboard?success=true`,
-        cancelUrl: `${window.location.origin}/#pricing?canceled=true`,
-      },
-    });
+    try {
+      console.log('Creating checkout session for plan:', plan.name, 'with price ID:', plan.priceId);
 
-    if (error) {
-      console.error('Checkout session error:', error);
-      throw new Error(error.message || 'Failed to create checkout session');
-    }
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: {
+          priceId: plan.priceId,
+          userId: user!.id,
+          planName: plan.name,
+          successUrl: `${window.location.origin}/dashboard?success=true`,
+          cancelUrl: `${window.location.origin}/#pricing?canceled=true`,
+        },
+      });
 
-    if (data?.sessionId) {
-      const stripe = await import('@stripe/stripe-js').then(m => m.loadStripe(
-        'pk_test_51QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV'
-      ));
+      if (error) {
+        console.error('Checkout session error:', error);
+        
+        // Handle specific error types
+        if (error.message?.includes('No such price')) {
+          throw new Error('This pricing plan is temporarily unavailable. Please contact support.');
+        } else if (error.message?.includes('authentication')) {
+          throw new Error('Authentication failed. Please sign out and sign back in.');
+        } else if (error.message?.includes('network') || error.message?.includes('connection')) {
+          throw new Error('Network connection issue. Please check your internet connection and try again.');
+        }
+        
+        throw new Error(error.message || 'Failed to create checkout session. Please try again.');
+      }
+
+      if (!data?.sessionId) {
+        console.error('No session ID returned:', data);
+        throw new Error('No checkout session created. Please try again.');
+      }
+
+      console.log('Checkout session created successfully:', data.sessionId);
+
+      // Load Stripe with better error handling
+      const stripeModule = await import('@stripe/stripe-js');
+      const stripe = await stripeModule.loadStripe(
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51QrXJRAYxgNJmWTCfY5abSqlXQ5dOnhzfUjHjCFdKC8tT0zF5sUPWoW5G0lf3K5rRKZjSaZqxI3yfOb0yOHhWA8R00r0UhUZLV'
+      );
       
       if (!stripe) {
-        throw new Error('Failed to load Stripe');
+        throw new Error('Failed to load Stripe. Please refresh the page and try again.');
       }
+
+      console.log('Redirecting to Stripe checkout with session:', data.sessionId);
 
       const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
       
       if (result.error) {
-        throw new Error(result.error.message);
+        console.error('Stripe redirect error:', result.error);
+        
+        // Handle specific Stripe errors
+        if (result.error.type === 'invalid_request_error') {
+          throw new Error('The checkout session has expired. Please try again.');
+        } else if (result.error.type === 'card_error') {
+          throw new Error('Payment method issue. Please try a different payment method.');
+        }
+        
+        throw new Error(result.error.message || 'Payment processing failed. Please try again.');
       }
-    } else {
-      throw new Error('No session ID returned from checkout creation');
+    } catch (stripeError) {
+      console.error('Stripe integration error:', stripeError);
+      
+      // Re-throw with user-friendly message
+      if (stripeError instanceof Error) {
+        throw stripeError;
+      } else {
+        throw new Error('Payment system temporarily unavailable. Please try again in a few minutes.');
+      }
     }
   };
 
