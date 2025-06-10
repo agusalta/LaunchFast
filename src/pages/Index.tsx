@@ -8,18 +8,31 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import AnimatedSection from "@/components/AnimatedSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Features />
-      <Screenshots />
-      <Pricing />
-      <Testimonials />
-      <Contact />
-      <CTA />
+      <AnimatedSection>
+        <Features />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Screenshots />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Pricing />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Testimonials />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Contact />
+      </AnimatedSection>
+      <AnimatedSection>
+        <CTA />
+      </AnimatedSection>
       <Footer />
     </div>
   );

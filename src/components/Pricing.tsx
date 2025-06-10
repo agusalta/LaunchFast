@@ -1,9 +1,11 @@
+
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCheckout } from "@/hooks/use-checkout";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AnimatedSection from './AnimatedSection';
 
 const Pricing = () => {
   const { t } = useLanguage();
@@ -80,65 +82,82 @@ const Pricing = () => {
   return (
     <section id="pricing" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-            {t('pricing.title')}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            {t('pricing.subtitle')}
-          </p>
-        </div>
+        <AnimatedSection>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+              {t('pricing.title')}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              {t('pricing.subtitle')}
+            </p>
+          </div>
+        </AnimatedSection>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
-            <div 
+            <AnimatedSection 
               key={index}
-              className={`relative p-8 bg-white rounded-xl border-2 transition-transform hover:scale-105 ${
-                plan.popular 
-                  ? 'border-green-500 shadow-lg scale-105' 
-                  : 'border-gray-200 hover:border-green-300'
-              }`}
+              delay={index * 150}
+              animation="fade-in-up"
             >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    {t('pricing.popular')}
-                  </span>
-                </div>
-              )}
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                  <span className="text-gray-600">/{plan.period}</span>
-                </div>
-                <p className="text-gray-600">{plan.description}</p>
-              </div>
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button 
-                className={`w-full transition-colors ${
+              <div 
+                className={`group relative p-8 bg-white rounded-xl border-2 transition-all duration-300 hover:-translate-y-2 ${
                   plan.popular 
-                    ? 'bg-green-600 hover:bg-green-700' 
-                    : 'bg-gray-900 hover:bg-gray-800'
+                    ? 'border-green-500 shadow-lg scale-105' 
+                    : 'border-gray-200 hover:border-green-300 hover:shadow-xl'
                 }`}
-                size="lg"
-                onClick={() => handlePlanClick(plan)}
-                disabled={!user && !plan.isFree}
               >
-                {!user && !plan.isFree ? 'Sign in to subscribe' : plan.cta}
-              </Button>
-              {!user && (
-                <p className="text-xs text-gray-500 mt-2 text-center">
-                  Sign in required for paid plans
-                </p>
-              )}
-            </div>
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium animate-pulse">
+                      {t('pricing.popular')}
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-green-600">
+                    {plan.name}
+                  </h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
+                    <span className="text-gray-600">/{plan.period}</span>
+                  </div>
+                  <p className="text-gray-600">{plan.description}</p>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li 
+                      key={featureIndex} 
+                      className="flex items-start transform transition-all duration-200 hover:translate-x-1"
+                    >
+                      <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button 
+                  className={`w-full transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+                    plan.popular 
+                      ? 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl' 
+                      : 'bg-gray-900 hover:bg-gray-800 hover:shadow-lg'
+                  }`}
+                  size="lg"
+                  onClick={() => handlePlanClick(plan)}
+                  disabled={!user && !plan.isFree}
+                >
+                  {!user && !plan.isFree ? 'Sign in to subscribe' : plan.cta}
+                </Button>
+
+                {!user && (
+                  <p className="text-xs text-gray-500 mt-2 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Sign in required for paid plans
+                  </p>
+                )}
+              </div>
+            </AnimatedSection>
           ))}
         </div>
       </div>
