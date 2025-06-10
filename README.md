@@ -24,6 +24,7 @@ Launch Spark MVP is a modern SaaS platform designed to help entrepreneurs and st
 ## 🛠️ Technologies Used
 
 - **Frontend**:
+
   - React 18
   - TypeScript
   - Tailwind CSS
@@ -45,47 +46,156 @@ Launch Spark MVP is a modern SaaS platform designed to help entrepreneurs and st
 - Node.js (v16 or higher)
 - npm or yarn
 - Git
+- Supabase account
+- Stripe account
 
-### Installation
+### Quick Start
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/your-username/launch-spark-mvp.git
 cd launch-spark-mvp
 ```
 
-2. Install dependencies:
+2. Run the setup script:
+
+```bash
+# Make the script executable
+chmod +x scripts/setup.sh
+
+# Run the setup script
+./scripts/setup.sh
+```
+
+The setup script will:
+
+- Install dependencies
+- Set up Supabase locally
+- Create necessary database tables
+- Deploy Edge Functions
+- Guide you through the configuration process
+
+### Required Configuration Steps
+
+After running the setup script, you need to complete these essential configuration steps:
+
+1. **Configure Environment Variables**:
+
+   - Copy `.env.example` to `.env` (if not already done by the setup script)
+   - Fill in the following variables:
+
+     ```env
+     # Supabase Configuration
+     VITE_SUPABASE_URL=your-supabase-project-url
+     VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+     # Stripe Configuration
+     VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+     STRIPE_SECRET_KEY=your-stripe-secret-key
+     STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+
+     # Application Configuration
+     VITE_APP_URL=http://localhost:3000
+     ```
+
+2. **Set up Supabase**:
+
+   - Create a Supabase account at https://supabase.com
+   - Create a new project
+   - Get your project URL and anon key from the project settings
+   - Configure authentication settings in the Supabase dashboard
+
+3. **Set up Stripe**:
+
+   - Create a Stripe account at https://stripe.com
+   - Create your products and pricing plans in the Stripe dashboard
+   - Get your API keys from the Stripe dashboard
+   - Configure webhook endpoints in Stripe:
+     - Go to Developers > Webhooks
+     - Add endpoint: `https://[YOUR_PROJECT_REF].supabase.co/functions/v1/stripe-webhook`
+     - Select events to listen for:
+       - `checkout.session.completed`
+       - `customer.subscription.updated`
+       - `customer.subscription.deleted`
+     - Save the webhook signing secret
+
+4. **Deploy Supabase Functions** (if not done during setup):
+
+   ```bash
+   # Link your project
+   supabase link --project-ref your-project-ref
+
+   # Deploy functions
+   supabase functions deploy create-checkout-session
+   supabase functions deploy stripe-webhook
+   supabase functions deploy stripe-portal
+   supabase functions deploy stripe-refund
+   supabase functions deploy refresh-subscription
+   ```
+
+5. **Start the Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+For detailed examples of each configuration step, check the `examples/` directory.
+
+### Manual Installation
+
+If you prefer to set up manually:
+
+1. Install dependencies:
+
 ```bash
 npm install
-# or
-yarn install
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env
-```
+2. Set up environment variables:
 
-4. Start the development server:
+   - Copy `.env.example` to `.env`
+   - Fill in your environment variables
+
+3. Set up Supabase:
+
+   - Create a new Supabase project
+   - Run the database migrations
+   - Configure authentication settings
+
+4. Set up Stripe:
+
+   - Create a Stripe account
+   - Set up your products and pricing plans
+   - Configure webhook endpoints
+
+5. Start the development server:
+
 ```bash
 npm run dev
-# or
-yarn dev
 ```
+
+## 📚 Examples
+
+Check out the `examples/` directory for detailed examples of:
+
+- Checkout implementation
+- Stripe integration
+- Authentication flows
+- Database operations
+- UI components
+- Deployment configurations
 
 ## 📦 Project Structure
 
 ```
 launch-spark-mvp/
-├── src/
-│   ├── components/     # Reusable components
-│   ├── pages/         # Application pages
-│   ├── hooks/         # Custom hooks
-│   ├── services/      # Services and APIs
-│   ├── utils/         # Utilities and helpers
-│   └── types/         # TypeScript definitions
-├── public/            # Static files
-└── tests/            # Unit and integration tests
+├── src/                # Source code
+├── supabase/          # Supabase configuration
+│   ├── functions/     # Edge Functions
+│   └── migrations/    # Database migrations
+├── examples/          # Usage examples
+├── scripts/           # Utility scripts
+└── public/           # Static files
 ```
 
 ## 🔧 Configuration
@@ -93,9 +203,17 @@ launch-spark-mvp/
 ### Environment Variables
 
 ```env
-VITE_API_URL=http://localhost:3000
-VITE_APP_NAME=Launch Spark
-VITE_APP_VERSION=1.0.0
+# Supabase Configuration
+VITE_SUPABASE_URL=your-supabase-project-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+
+# Stripe Configuration
+VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+STRIPE_SECRET_KEY=your-stripe-secret-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+
+# Application Configuration
+VITE_APP_URL=http://localhost:3000
 ```
 
 ## 🧪 Testing
@@ -135,15 +253,11 @@ docker run -p 3000:3000 launch-spark-mvp
 
 ## 🤝 Contributing
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/your-username/launch-spark-mvp/issues).
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Support
 
@@ -158,5 +272,5 @@ For support, email support@launchspark.com or join our [Discord](https://discord
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by the Launch Spark Team</sub>
+  <sub>Built by Agustín Altamirano</sub>
 </div>
