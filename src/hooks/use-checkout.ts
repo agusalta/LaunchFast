@@ -119,6 +119,13 @@ export const useCheckout = () => {
         throw new Error(error.message);
       }
 
+      // Prefer OAUTH URL from backend if provided
+      if (data?.url && typeof data.url === "string") {
+        console.log("Opening Stripe checkout via URL in new tab:", data.url);
+        window.open(data.url, "_blank");
+        return;
+      }
+
       if (!data?.sessionId) {
         throw new Error("No session ID received from server");
       }
