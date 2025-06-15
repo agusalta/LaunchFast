@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -12,6 +11,7 @@ import { useSubscription } from '@/hooks/use-subscription';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3, User, CreditCard } from 'lucide-react';
+import PlanActions from "@/components/PlanActions";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -104,6 +104,7 @@ const Dashboard = () => {
 
             <TabsContent value="subscription">
               <SubscriptionStatus />
+              <PlanActions />
             </TabsContent>
 
             <TabsContent value="analytics">
