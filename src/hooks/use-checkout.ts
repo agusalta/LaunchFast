@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { loadStripe } from "@stripe/stripe-js";
 
+// HARDCODE your live/test Stripe publishable key here.
+const STRIPE_PUBLISHABLE_KEY = "pk_test_51NOGLbIeCmoKndoZy8gyo1OHPwlVAV67kl...replace_with_yours...";
+
 export const useCheckout = () => {
   const { user, session } = useAuth();
   const { toast } = useToast();
@@ -120,9 +123,8 @@ export const useCheckout = () => {
         throw new Error("No session ID received from server");
       }
 
-      const stripe = await loadStripe(
-        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-      );
+      // Use the hardcoded publishable key.
+      const stripe = await loadStripe(STRIPE_PUBLISHABLE_KEY);
 
       if (!stripe) {
         throw new Error(
@@ -160,7 +162,6 @@ export const useCheckout = () => {
     } catch (stripeError) {
       console.error("Stripe integration error:", stripeError);
 
-      // Re-throw with user-friendly message
       if (stripeError instanceof Error) {
         throw stripeError;
       } else {
