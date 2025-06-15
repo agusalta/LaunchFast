@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { redirectToStripeCheckoutSession } from "./use-stripe";
 
 // HARDCODE your live/test Stripe publishable key here.
 const STRIPE_PUBLISHABLE_KEY = "pk_test_51NOGLbIeCmoKndoZy8gyo1OHPwlVAV67kl...replace_with_yours...";
@@ -130,42 +131,9 @@ export const useCheckout = () => {
         throw new Error("No session ID received from server");
       }
 
-      // Use the hardcoded publishable key.
-      const stripe = await loadStripe(STRIPE_PUBLISHABLE_KEY);
+      // Use imported Stripe utility for redirect
+      await redirectToStripeCheckoutSession(data.sessionId);
 
-      if (!stripe) {
-        throw new Error(
-          "Failed to load Stripe. Please refresh the page and try again."
-        );
-      }
-
-      console.log(
-        "Redirecting to Stripe checkout with session:",
-        data.sessionId
-      );
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: data.sessionId,
-      });
-
-      if (result.error) {
-        console.error("Stripe redirect error:", result.error);
-
-        // Handle specific Stripe errors
-        if (result.error.type === "invalid_request_error") {
-          throw new Error(
-            "The checkout session has expired. Please try again."
-          );
-        } else if (result.error.type === "card_error") {
-          throw new Error(
-            "Payment method issue. Please try a different payment method."
-          );
-        }
-
-        throw new Error(
-          result.error.message || "Payment processing failed. Please try again."
-        );
-      }
     } catch (stripeError) {
       console.error("Stripe integration error:", stripeError);
 
